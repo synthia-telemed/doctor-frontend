@@ -13,11 +13,15 @@ const VideoCallPage = () => {
   const localVideo = useRef()
   const remoteVideo = useRef()
 
+  const stopMediaStream = stream => {
+    stream.getAudioTracks().forEach(track => track.stop())
+    stream.getVideoTracks().forEach(track => track.stop())
+  }
   const onCloseRoom = () => {
     socket.current.emit('close-room')
     peer.current.destroy()
-    remoteVideo.current = undefined
-    localVideo.current = undefined
+    if (remoteVideo.current.srcObject) stopMediaStream(remoteVideo.current.srcObject)
+    if (localVideo.current.srcObject) stopMediaStream(localVideo.current.srcObject)
   }
 
   const onStartPeering = isInitiator => {
@@ -68,15 +72,17 @@ const VideoCallPage = () => {
 
   const onToggleMic = async () => {
     if (!localVideo.current) await requestMediaDevice()
-    console.log('audio', localVideo.current.srcObject.getAudioTracks())
-    localVideo.current.srcObject.getAudioTracks()[0].enabled = !isMicOn
+    localVideo.current.srcObject
+      .getAudioTracks()
+      .forEach(track => (track.enabled = !isMicOn))
     setIsMicOn(!isMicOn)
   }
 
   const onToggleCamera = async () => {
     if (!localVideo.current) await requestMediaDevice()
-    console.log('video', localVideo.current.srcObject.getVideoTracks())
-    localVideo.current.srcObject.getVideoTracks()[0].enabled = !isCameraOn
+    localVideo.current.srcObject
+      .getVideoTracks()
+      .forEach(track => (track.enabled = !isCameraOn))
     setIsCameraOn(!isCameraOn)
   }
 
