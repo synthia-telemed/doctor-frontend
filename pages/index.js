@@ -5,9 +5,13 @@ export default function Login() {
   const { register, handleSubmit, reset } = useForm({})
 
   const onSubmit = async data => {
-    const { data: loginData } = await authApi.post('/signin', data)
-    // TODO: Reset the values in the form
-    localStorage.setItem('token', loginData.token)
+    try {
+      const { data: loginData } = await authApi.post('/signin', data)
+      // TODO: Reset the values in the form
+      localStorage.setItem('token', loginData.token)
+    } catch (error) {
+      // TODO: Display error to the user
+    }
   }
   return (
     <div>
