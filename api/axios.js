@@ -14,6 +14,8 @@ export const api = Axios.create({
   }
 })
 
+export const apiFetcher = url => api.get(url).then(res => res.data)
+
 export const authApi = Axios.create({
   baseURL: `${baseURL}/auth`
 })
