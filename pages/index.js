@@ -1,14 +1,17 @@
+import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { authApi } from '../api/axios'
 
 export default function Login() {
   const { register, handleSubmit } = useForm({})
+  const dispatch = useDispatch()
 
   const onSubmit = async data => {
     try {
       const { data: loginData } = await authApi.post('/signin', data)
       // TODO: Reset the values in the form
       localStorage.setItem('token', loginData.token)
+      dispatch.token.setToken(loginData.token)
     } catch (error) {
       // TODO: Display error to the user
     }
