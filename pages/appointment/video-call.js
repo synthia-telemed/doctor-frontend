@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import Peer from 'simple-peer'
 
 const VideoCallPage = () => {
   const [roomID, setRoomID] = useState('')
-  const [token, setToken] = useState('')
   const [isMicOn, setIsMicOn] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
+  const { token } = useSelector(state => state.token)
 
-  const peer = useRef()
   const socket = useRef()
   const localVideo = useRef()
   const remoteVideo = useRef()
@@ -19,36 +19,44 @@ const VideoCallPage = () => {
   }
   const onCloseRoom = () => {
     socket.current.emit('close-room')
-    peer.current.destroy()
     if (remoteVideo.current.srcObject) stopMediaStream(remoteVideo.current.srcObject)
     if (localVideo.current.srcObject) stopMediaStream(localVideo.current.srcObject)
   }
 
   const onStartPeering = isInitiator => {
     console.log('got start-peering', isInitiator)
-    peer.current = new Peer({
+    const peer = new Peer({
       stream: localVideo.current.srcObject,
       initiator: isInitiator
     })
-    peer.current.on('signal', data => {
+    peer.on('signal', data => {
       socket.current.emit('signal', data)
     })
-    peer.current.on('stream', stream => {
+    peer.on('stream', stream => {
       console.log('got stream')
       remoteVideo.current.srcObject = stream
     })
-    peer.current.on('connect', () => {
+    peer.on('connect', () => {
       console.log('Peer connected')
     })
+
     socket.current.on('signal', data => {
-      peer.current.signal(data)
+      peer.signal(data)
+    })
+    socket.current.on('room-closed', duration => {
+      console.log('Closing the room', duration)
+      if (remoteVideo.current.srcObject) stopMediaStream(remoteVideo.current.srcObject)
+      if (localVideo.current.srcObject) stopMediaStream(localVideo.current.srcObject)
+    })
+
+    socket.current.on('user-left', () => {
+      console.log('User left')
+      if (remoteVideo.current.srcObject) stopMediaStream(remoteVideo.current.srcObject)
+      peer.destroy()
     })
   }
 
   const onEnterRoom = () => {
-    socket.current = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_ENDPOINT, {
-      auth: { token: `Bearer ${token}` }
-    })
     socket.current.emit('join-room', roomID)
     socket.current.on('start-peering', onStartPeering)
   }
@@ -57,6 +65,12 @@ const VideoCallPage = () => {
     requestMediaDevice()
       .then(() => {
         console.log('success get media device')
+        socket.current = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_ENDPOINT, {
+          auth: { token: `Bearer ${token}` }
+        })
+        socket.current.on('error', err => {
+          console.err('socket error', err)
+        })
       })
       .catch(err => {
         console.error(err)
