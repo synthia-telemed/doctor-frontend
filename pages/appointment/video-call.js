@@ -25,6 +25,7 @@ const VideoCallPage = () => {
 
   const onStartPeering = isInitiator => {
     console.log('got start-peering', isInitiator)
+    socket.current.off('start-peering', onStartPeering)
     const peer = new Peer({
       stream: localVideo.current.srcObject,
       initiator: isInitiator
