@@ -4,7 +4,7 @@ import io from 'socket.io-client'
 import Peer from 'simple-peer'
 
 const VideoCallPage = () => {
-  const [roomID, setRoomID] = useState('')
+  const [roomID, setRoomID] = useState('ADy-T29jSKfNdMgShQi1G')
   const [isMicOn, setIsMicOn] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
   const { token } = useSelector(state => state.token)
@@ -53,10 +53,19 @@ const VideoCallPage = () => {
       console.log('User left')
       if (remoteVideo.current.srcObject) stopMediaStream(remoteVideo.current.srcObject)
       peer.destroy()
+      socket.current.disconnect()
+      onEnterRoom()
     })
   }
 
   const onEnterRoom = () => {
+    socket.current = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_ENDPOINT, {
+      auth: { token: `Bearer ${token}` },
+      transports: ['websocket']
+    })
+    socket.current.on('error', err => {
+      console.err('socket error', err)
+    })
     socket.current.emit('join-room', roomID)
     socket.current.on('start-peering', onStartPeering)
   }
@@ -65,12 +74,7 @@ const VideoCallPage = () => {
     requestMediaDevice()
       .then(() => {
         console.log('success get media device')
-        socket.current = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_ENDPOINT, {
-          auth: { token: `Bearer ${token}` }
-        })
-        socket.current.on('error', err => {
-          console.err('socket error', err)
-        })
+        // onEnterRoom()
       })
       .catch(err => {
         console.error(err)
