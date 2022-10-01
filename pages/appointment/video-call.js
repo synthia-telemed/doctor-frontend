@@ -4,7 +4,7 @@ import io from 'socket.io-client'
 import Peer from 'simple-peer'
 
 const VideoCallPage = () => {
-  const [roomID, setRoomID] = useState('ADy-T29jSKfNdMgShQi1G')
+  const [roomID, setRoomID] = useState('')
   const [isMicOn, setIsMicOn] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
   const { token } = useSelector(state => state.token)
