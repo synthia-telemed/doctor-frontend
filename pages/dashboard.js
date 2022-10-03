@@ -1,10 +1,22 @@
 import { useEffect } from 'react'
-import useSWR from 'swr'
-import { apiFetcher } from '../api/axios'
+import router from 'next/router'
+import { useDispatch } from 'react-redux'
 
 const Dashboard = () => {
-  // TODO: Handler error and display appointments
-  return <div>Dashboard</div>
+  const dispatch = useDispatch()
+
+  const onLogout = () => {
+    dispatch.user.removeToken()
+    localStorage.removeItem('token')
+    router.push('/')
+  }
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <button onClick={onLogout}>Logout</button>
+    </div>
+  )
 }
 
 export default Dashboard

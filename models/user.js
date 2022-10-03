@@ -1,4 +1,4 @@
-export const token = {
+export const user = {
   state: {
     token: typeof window !== 'undefined' ? localStorage.getItem('token') : ''
   },
@@ -7,6 +7,12 @@ export const token = {
       return {
         ...state,
         token: payload
+      }
+    },
+    removeToken(state, payload) {
+      return {
+        ...state,
+        token: ''
       }
     }
   }
