@@ -7,7 +7,7 @@ const VideoCallPage = () => {
   const [roomID, setRoomID] = useState('')
   const [isMicOn, setIsMicOn] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
-  const { token } = useSelector(state => state.token)
+  const { token } = useSelector(state => state.user)
 
   const socket = useRef()
   const localVideo = useRef()
