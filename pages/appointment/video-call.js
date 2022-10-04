@@ -2,12 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import Peer from 'simple-peer'
+import useAPI from '../../hooks/useAPI'
 
 const VideoCallPage = () => {
   const [roomID, setRoomID] = useState('')
   const [isMicOn, setIsMicOn] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
-  const { token } = useSelector(state => state.token)
+  const [appointmentStatus, setAppointmentStatus] = useState('COMPLETED')
+  const { token } = useSelector(state => state.user)
+  const [api] = useAPI()
 
   const socket = useRef()
   const localVideo = useRef()
@@ -44,8 +47,9 @@ const VideoCallPage = () => {
     socket.current.on('signal', data => {
       peer.signal(data)
     })
-    socket.current.on('room-closed', duration => {
+    socket.current.on('room-closed', async duration => {
       console.log('Closing the room', duration)
+      await api.post('/appointment/complete', { status: appointmentStatus })
       if (remoteVideo.current.srcObject) stopMediaStream(remoteVideo.current.srcObject)
       if (localVideo.current.srcObject) stopMediaStream(localVideo.current.srcObject)
     })
@@ -117,6 +121,13 @@ const VideoCallPage = () => {
       <button onClick={onEnterRoom}>Ready Ka</button>
       <video playsInline autoPlay ref={localVideo} muted></video>
       <video playsInline autoPlay ref={remoteVideo}></video>
+      <select
+        name="Appointment status"
+        onChange={e => setAppointmentStatus(e.target.value)}
+      >
+        <option value="COMPLETED">Complete</option>
+        <option value="CANCELLED">Cancelled</option>
+      </select>
       <button onClick={onCloseRoom}>Close Room</button>
       <button onClick={onToggleCamera}>
         {isCameraOn ? 'Close Camera' : 'Open Camera'}
