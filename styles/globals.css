@@ -1,11 +1,451 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../Components/Assets/Poppins/Poppins-Regular.otf');
+  font-style: normal;
+}
+.typographyHeading2xlRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 72px;
+  line-height: 90px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
 }
 
+.typographyHeading2xlMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 72px;
+  line-height: 90px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingMdSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 42px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingSmMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyHeadingXsSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextLgSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextMdRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextMdMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextMdSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextSmRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextSmMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextXsRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextXsMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextSmSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyHeading2xlSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 72px;
+  line-height: 90px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeading2xlBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 72px;
+  line-height: 90px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingXlRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 60px;
+  line-height: 72px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingXlMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 60px;
+  line-height: 72px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingXlSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 60px;
+  line-height: 72px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingXlBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 72px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingLgRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 60px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingLgMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 60px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingLgSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 60px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingLgBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 60px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingMdRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 42px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingMdMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 42px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingMdBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 42px;
+  letter-spacing: -0.02em;
+  text-indent: 0px;
+}
+
+.typographyHeadingSmRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyHeadingSmSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyHeadingSmBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyHeadingXsRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyHeadingXsMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyHeadingXsBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextXlRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextXlMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextXlSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextXlBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextLgRegular {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextLgMedium {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextLgBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextMdBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextSmBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextXsSemibold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
+
+.typographyTextXsBold {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0em;
+  text-indent: 0px;
+}
 a {
   color: inherit;
   text-decoration: none;
@@ -15,7 +455,7 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
@@ -23,4 +463,4 @@ a {
     color: white;
     background: black;
   }
-}
+} */
