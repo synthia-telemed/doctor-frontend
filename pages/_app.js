@@ -2,6 +2,8 @@ import { Provider } from 'react-redux'
 import { init } from '@rematch/core'
 import * as models from '../models'
 import App from 'next/app'
+import 'rsuite/dist/rsuite.min.css'
+import '../styles/globals.css'
 
 const store = init({
   models

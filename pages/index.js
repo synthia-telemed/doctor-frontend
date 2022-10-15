@@ -21,18 +21,38 @@ export default function Login() {
     }
   }
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center w-screen h-screen">
+      <h1 className="typographyHeadingMdMedium">Login to your account</h1>
+      <h1 className="typographyTextMdMedium text-gray-600">
+        Welcome back! Please enter your details.
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register('username', { required: true })}
-          placeholder="username"
-        ></input>
-        <input
-          {...register('password', { required: true })}
-          placeholder="password"
-          type="password"
-        ></input>
-        <input type="submit" />
+        <div className="flex flex-col mt-[34px] items-center">
+          <div className="w-[360px] h-[70px]">
+            <h1 className="typographyTextMdMedium text-gray-700">Username</h1>
+            <input
+              className="border-[1px] border-solid border-gray-300 px-[10px] py-[14px] rounded-[8px] w-full"
+              {...register('username', { required: true })}
+              placeholder="username"
+            ></input>
+          </div>
+          <div className="mt-[34px] w-[360px] h-[70px]">
+            <h1 className="typographyTextMdMedium text-gray-700">Password</h1>
+            <input
+              className="border-[1px] border-solid border-gray-300 px-[10px] py-[14px] rounded-[8px] w-full"
+              {...register('password', { required: true })}
+              placeholder="password"
+              type="password"
+            ></input>
+          </div>
+
+          <button
+            type="submit"
+            className="mt-[34px] w-[360px] h-[48px] px-[10px] py-[18px] rounded-[8px] bg-primary-500 flex justify-center items-center text-base-white"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   )
