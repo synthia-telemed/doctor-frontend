@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
+import { router, withRouter } from 'next/router'
+import VideoCallOffIcon from '../../Components/Assets/VideoCallOffIcon'
+import VideoCallOnIcon from '../../Components/Assets/VideoCallonIcon'
+import MicrophoneOffIcon from '../../Components/Assets/MicrophoneOffIcon'
+import MicrophoneOnIcon from '../../Components/Assets/MicrophoneOnIcon'
+import EndCallIcon from '../../Components/Assets/EndCallIcon'
 import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import Peer from 'simple-peer'
 import useAPI from '../../hooks/useAPI'
 
-const VideoCallPage = () => {
-  const [roomID, setRoomID] = useState('')
+const VideoCallPage = props => {
   const [isMicOn, setIsMicOn] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
   const [appointmentStatus, setAppointmentStatus] = useState('COMPLETED')
@@ -22,8 +27,18 @@ const VideoCallPage = () => {
   }
   const onCloseRoom = () => {
     socket.current.emit('close-room')
-    if (remoteVideo.current.srcObject) stopMediaStream(remoteVideo.current.srcObject)
-    if (localVideo.current.srcObject) stopMediaStream(localVideo.current.srcObject)
+    if (remoteVideo.current?.srcObject) stopMediaStream(remoteVideo.current.srcObject)
+    if (localVideo.current?.srcObject) stopMediaStream(localVideo.current.srcObject)
+    router.push(
+      {
+        pathname: '/patient-detail',
+        query: {
+          appointmentID: props.router.query.appointmentID
+        }
+      },
+      '/patient-detail',
+      { shallow: false }
+    )
   }
 
   const onStartPeering = isInitiator => {
@@ -63,7 +78,7 @@ const VideoCallPage = () => {
     })
   }
 
-  const onEnterRoom = () => {
+  const onEnterRoom = ({ roomID, jwtToken }) => {
     socket.current = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_ENDPOINT, {
       auth: { token: `Bearer ${token}` },
       transports: ['websocket']
@@ -79,7 +94,10 @@ const VideoCallPage = () => {
     requestMediaDevice()
       .then(() => {
         console.log('success get media device')
-        // onEnterRoom()
+        onEnterRoom({
+          roomID: props.router.query.roomID,
+          jwtToken: token
+        })
       })
       .catch(err => {
         console.error(err)
@@ -111,30 +129,56 @@ const VideoCallPage = () => {
 
   return (
     <div>
-      <h1>Video Call Page</h1>
-      <input placeholder="token" value={token} onChange={v => setToken(v.target.value)} />
-      <input
-        placeholder="roomID"
-        value={roomID}
-        onChange={v => setRoomID(v.target.value)}
-      />
-      <button onClick={onEnterRoom}>Ready Ka</button>
-      <video playsInline autoPlay ref={localVideo} muted></video>
-      <video playsInline autoPlay ref={remoteVideo}></video>
-      <select
-        name="Appointment status"
-        onChange={e => setAppointmentStatus(e.target.value)}
-      >
-        <option value="COMPLETED">Complete</option>
-        <option value="CANCELLED">Cancelled</option>
-      </select>
-      <button onClick={onCloseRoom}>Close Room</button>
-      <button onClick={onToggleCamera}>
-        {isCameraOn ? 'Close Camera' : 'Open Camera'}
-      </button>
-      <button onClick={onToggleMic}>{isMicOn ? 'Mute' : 'Unmute'}</button>
+      <div className="flex justify-between p-[32px]">
+        <div className="relative">
+          <video
+            className={`relative object-cover`}
+            playsInline
+            autoPlay
+            ref={localVideo}
+            muted
+          ></video>
+          {isMicOn ? (
+            <></>
+          ) : (
+            <div className="absolute top-[90%] right-[10%] z-10">
+              <MicrophoneOffIcon color="red" />
+            </div>
+          )}
+        </div>
+        <video playsInline autoPlay ref={remoteVideo}></video>
+      </div>
+      <div className="flex justify-center mt-[64px]">
+        <button
+          onClick={onToggleCamera}
+          className="bg-[#131517A1] rounded-[32px] w-[48px] h-[48px] background-blur-[3px] flex justify-center items-center "
+        >
+          {isCameraOn ? <VideoCallOnIcon /> : <VideoCallOffIcon />}
+        </button>
+        <div className="flex items-center  mx-[32px]">
+          <button
+            onClick={onCloseRoom}
+            className="bg-[#FB0242] rounded-[32px] w-[48px] h-[48px] background-blur-[3px] flex justify-center items-center mr-[16px]"
+          >
+            <EndCallIcon />
+          </button>
+          <select
+            name="Appointment status"
+            onChange={e => setAppointmentStatus(e.target.value)}
+          >
+            <option value="COMPLETED">Complete</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+        </div>
+        <button
+          onClick={onToggleMic}
+          className="bg-[#131517A1] rounded-[32px] w-[48px] h-[48px] background-blur-[3px] flex justify-center items-center"
+        >
+          {isMicOn ? <MicrophoneOnIcon /> : <MicrophoneOffIcon />}
+        </button>
+      </div>
     </div>
   )
 }
 
-export default VideoCallPage
+export default withRouter(VideoCallPage)

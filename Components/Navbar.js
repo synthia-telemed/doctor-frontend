@@ -7,7 +7,7 @@ const Navbar = () => {
   }, [])
   const ButtonNavbar = ({ text, textStyle, bgStyle, icon, path, colorIcon }) => {
     return (
-      <div className="" onClick={() => router.push(path)}>
+      <div className="cursor-pointer" onClick={() => router.push(path)}>
         <div
           className={`flex flex-col justify-center items-center w-[131px] h-[40px] ${bgStyle} rounded-[16px]`}
         >

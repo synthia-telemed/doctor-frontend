@@ -14,15 +14,19 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState('')
   const [apiDefault] = useAPI()
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
+  const [renderFirstTime, setRenderFirstTime] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
     getListAppointment()
+    setRenderFirstTime(true)
   }, [])
 
   useEffect(() => {
     getListAppointment()
-  }, [panel, search])
+  }, [panel, search, startTime, endTime])
 
   const getListAppointment = async () => {
     setLoading(true)
@@ -30,17 +34,24 @@ const Dashboard = () => {
       status: panel,
       page_number: 1,
       per_page: 100,
-      text: search ? search : null
+      text: search ? search : null,
+      end_date_time: endTime === '' ? null : endTime,
+      start_date_time: startTime === '' ? null : startTime
     }
     const res = await apiDefault.get('/appointment', { params: query })
+    console.log(res)
     setListAppointment(res.data.appointments)
     setLoading(false)
+  }
+  const onChangeDateRangePicker = value => {
+    setStartTime(value[0])
+    setEndTime(value[1])
   }
 
   const ButtonPanel = ({ text, style }) => {
     return (
       <div
-        className={`w-[109px] h-[36px] text-center ${
+        className={`cursor-pointer w-[109px] h-[36px] text-center ${
           panel === text ? 'bg-gray-50 text-base-black' : 'bg-base-white text-gray-500'
         } ${style}`}
         onClick={() => setPanel(text)}
@@ -64,7 +75,7 @@ const Dashboard = () => {
             { shallow: false }
           )
         }
-        className="w-full px-[24px] py-[16px] flex border-b-[1px] border-solid border-gray-200"
+        className="cursor-pointer w-full px-[24px] py-[16px] flex border-b-[1px] border-solid border-gray-200"
       >
         <div className="max-w-[176px] w-full flex items-center">
           <img
@@ -131,7 +142,7 @@ const Dashboard = () => {
               autoFocus
             />
           </div>
-          <DateRangeTimePicker />
+          <DateRangeTimePicker onChange={onChangeDateRangePicker} />
         </div>
       </div>
     )
@@ -146,11 +157,11 @@ const Dashboard = () => {
   return (
     <div>
       <Navbar />
-      <div className="border-[1px] border-solid border-gray-200 h-full rounded-[8px] mt-[39px] mx-[112px] h-[70vh]">
+      <div className="border-[1px] border-solid border-gray-200 h-full rounded-[8px] mt-[39px] mx-[112px] ">
         <h1 className="pl-[16px] typographyHeadingSmSemibold mt-[55px] text-base-black">
           Appointment
         </h1>
-        <Panel />
+        {renderFirstTime ? <Panel /> : <></>}
 
         <div className="flex flex-col items-center mt-[11px] w-full">
           <div className="flex typographyHeadingXsMedium w-full pl-[16px] bg-gray-50 px-[24px] py-[12px] border-[1px] rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200">
