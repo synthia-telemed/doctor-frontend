@@ -8,6 +8,18 @@ import PrimaryButton from '../Components/PrimaryButton'
 const PatientDetail = props => {
   const [apiDefault] = useAPI()
   const [detailAppointment, setDetailAppointment] = useState()
+  var current = new Date()
+  const checkIsAfterStartDateTime = dayjs(current).isAfter(
+    detailAppointment?.start_date_time
+  )
+  const checkIsBeforeStartDateTime = dayjs(current).isBefore(
+    detailAppointment?.start_date_time
+  )
+  const checkIsAfterEndDateTime = dayjs(current).isAfter(detailAppointment?.end_date_time)
+  const checkIsBeforeEndDateTime = dayjs(current).isBefore(
+    dayjs(detailAppointment?.end_date_time).add(3, 'h')
+  )
+
   useEffect(() => {
     getDetailAppointment()
   }, [])
@@ -16,7 +28,21 @@ const PatientDetail = props => {
     const res = await apiDefault.get(`/appointment/${props.router.query.appointmentID}`)
     setDetailAppointment(res.data)
   }
-  console.log(detailAppointment)
+  const joinMeeting = async () => {
+    const res = await apiDefault.post(`/appointment/${props.router.query.appointmentID}`)
+    console.log(res.data)
+    router.push(
+      {
+        pathname: '/appointment/video-call',
+        query: {
+          roomID: res.data.room_id,
+          appointmentID: props.router.query.appointmentID
+        }
+      },
+      '/appointment/video-call',
+      { shallow: false }
+    )
+  }
   useEffect(() => {}, [props.router.query])
 
   const CardPatientDetail = () => {
@@ -98,9 +124,17 @@ const PatientDetail = props => {
             </h1>
           </div>
           <div className="justify-center flex mt-[48px]">
-            <div className="w-[235px] ">
-              <PrimaryButton text="join meeting" width="235px" onClick={() => {}} />
-            </div>
+            {checkIsBeforeStartDateTime ? (
+              <h1 className="text-primary-500">Wait Until 10 minute Before Schedule</h1>
+            ) : checkIsAfterStartDateTime && checkIsBeforeEndDateTime ? (
+              <div className="w-[235px] ">
+                <PrimaryButton text="join meeting" width="235px" onClick={joinMeeting} />
+              </div>
+            ) : checkIsAfterEndDateTime ? (
+              <h1 className="text-primary-500">Your Miss this schedule</h1>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
