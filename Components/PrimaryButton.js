@@ -7,7 +7,7 @@ const PrimaryButton = ({
 }) => {
   return (
     <div
-      className={`cursor-pointer flex justify-center w-full h-[${height}] items-center mt-[${marginTop}] mb-[30px]`}
+      className={`cursor-pointer flex justify-center w-full h-[${height}] items-center mt-[${marginTop}] mb-[30px] min-h-[48px]`}
       onClick={onClick}
     >
       <div
