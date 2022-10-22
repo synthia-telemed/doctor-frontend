@@ -78,7 +78,7 @@ const VideoCallPage = props => {
     })
   }
 
-  const onEnterRoom = ({ roomID, jwtToken }) => {
+  const onEnterRoom = () => {
     socket.current = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_ENDPOINT, {
       auth: { token: `Bearer ${token}` },
       transports: ['websocket']
@@ -86,7 +86,7 @@ const VideoCallPage = props => {
     socket.current.on('error', err => {
       console.err('socket error', err)
     })
-    socket.current.emit('join-room', roomID)
+    socket.current.emit('join-room', props.router.query.roomID)
     socket.current.on('start-peering', onStartPeering)
   }
 
@@ -94,10 +94,7 @@ const VideoCallPage = props => {
     requestMediaDevice()
       .then(() => {
         console.log('success get media device')
-        onEnterRoom({
-          roomID: props.router.query.roomID,
-          jwtToken: token
-        })
+        onEnterRoom()
       })
       .catch(err => {
         console.error(err)
