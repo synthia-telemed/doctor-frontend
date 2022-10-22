@@ -63,6 +63,7 @@ const Dashboard = () => {
   const CardAppointment = ({ data }) => {
     return (
       <div
+        className="cursor-pointer"
         onClick={() =>
           router.push(
             {
@@ -73,38 +74,83 @@ const Dashboard = () => {
             { shallow: false }
           )
         }
-        className="cursor-pointer w-full px-[24px] py-[16px] flex border-b-[1px] border-solid border-gray-200"
       >
-        <div className="max-w-[176px] w-full flex items-center">
-          <img
-            src="/image/Ellipse 3.png"
-            alt=""
-            width="32px"
-            height="32px"
-            className="mr-[8px]"
-          />
-          <h1 className="typographyTextSmMedium text-base-black">
-            {data.patient.full_name}
-          </h1>
-        </div>
-        <div className="max-w-[137px] w-full flex items-center">
-          <h1 className="typographyTextSmMedium text-base-black">{data.patient.id}</h1>
-        </div>
-        <div className="max-w-[170px] w-full flex items-center">
-          <h1 className="typographyTextSmMedium text-base-black">
-            {dayjs(data.end_date_time).format('DD MMMM YYYY')}
-          </h1>
-        </div>
-        <div className="max-w-[176px] w-full flex items-center">
-          <h1 className="typographyTextSmMedium text-base-black">
-            {' '}
-            {dayjs(data.end_date_time).utcOffset(7).format('dddd HH:mm A')}
-          </h1>
-        </div>
-        <div className="max-w-full w-full flex items-center">
-          <h1 className="typographyTextSmMedium text-base-black"> {data?.detail}</h1>
+        <div className="grid grid-cols-6 gap-4 w-full px-[24px] py-[16px] border-b-[1px] border-solid border-gray-200 items-center">
+          <div className="flex w-full items-center">
+            <img
+              src="/image/Ellipse 3.png"
+              alt=""
+              width="32px"
+              height="32px"
+              className="mr-[8px] object-contain"
+            />
+            <h1 className="typographyTextSmMedium text-base-black">
+              {data.patient.full_name}
+            </h1>
+          </div>
+          <div className="">
+            <h1 className="typographyTextSmMedium text-base-black">{data.patient.id}</h1>
+          </div>
+          <div className="">
+            <h1 className="typographyTextSmMedium text-base-black">
+              {dayjs(data.end_date_time).format('DD MMMM YYYY')}
+            </h1>
+          </div>
+          <div className="">
+            <h1 className="typographyTextSmMedium text-base-black">
+              {' '}
+              {dayjs(data.end_date_time).utcOffset(7).format('dddd HH:mm A')}
+            </h1>
+          </div>
+          <div className="col-span-2">
+            <h1 className="typographyTextSmMedium text-base-black"> {data?.detail}</h1>
+          </div>
         </div>
       </div>
+
+      // <div
+      //   onClick={() =>
+      //     router.push(
+      //       {
+      //         pathname: '/patient-detail',
+      //         query: { appointmentID: data.id }
+      //       },
+      //       '/patient-detail',
+      //       { shallow: false }
+      //     )
+      //   }
+      //   className="cursor-pointer w-full min-w-full px-[24px] py-[16px] flex border-b-[1px] border-solid border-gray-200"
+      // >
+      //   <div className="max-w-[176px] min-w-[176px] w-full flex items-center">
+      //     <img
+      //       src="/image/Ellipse 3.png"
+      //       alt=""
+      //       width="32px"
+      //       height="32px"
+      //       className="mr-[8px]"
+      //     />
+      //     <h1 className="typographyTextSmMedium text-base-black">
+      //       {data.patient.full_name}
+      //     </h1>
+      //   </div>
+      //   <div className="max-w-[137px] min-w-[137px] w-full flex items-center">
+      //     <h1 className="typographyTextSmMedium text-base-black">{data.patient.id}</h1>
+      //   </div>
+      //   <div className="max-w-[170px] min-w-[170px] w-full flex items-center">
+      //     <h1 className="typographyTextSmMedium text-base-black">
+      //       {dayjs(data.end_date_time).format('DD MMMM YYYY')}
+      //     </h1>
+      //   </div>
+      //   <div className="max-w-[176px] min-w-[176px] w-full flex items-center">
+      //     <h1 className="typographyTextSmMedium text-base-black">
+      //       {' '}
+      //       {dayjs(data.end_date_time).utcOffset(7).format('dddd HH:mm A')}
+      //     </h1>
+      //   </div>
+      //   <div className="max-w-full min-w-[505px] w-full flex items-center justify-start">
+      //     <h1 className="typographyTextSmMedium text-base-black"> {data?.detail}</h1>
+      //   </div>
+      // </div>
     )
   }
   const Panel = () => {
@@ -159,14 +205,14 @@ const Dashboard = () => {
   return (
     <div>
       <Navbar />
-      <div className="border-[1px] border-solid border-gray-200 h-full rounded-[8px] mt-[39px] mx-[112px] ">
+      <div className="border-[1px] border-solid border-gray-200 h-full rounded-[8px] mt-[39px] mx-[112px] mb-[100px]">
         <h1 className="pl-[16px] typographyHeadingSmSemibold mt-[55px] text-base-black">
           Appointment
         </h1>
         <Panel />
 
-        <div className="flex flex-col items-center mt-[11px] w-full">
-          <div className="flex typographyHeadingXsMedium w-full pl-[16px] bg-gray-50 px-[24px] py-[12px] border-[1px] rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200">
+        <div className="flex flex-col items-center mt-[11px] w-full ">
+          {/* <div className="flex typographyHeadingXsMedium w-full pl-[16px] bg-gray-50 px-[24px] py-[12px] border-[1px] rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200">
             <h1 className="typographyTextXsMedium text-gray-500 w-[176px] ">
               Patient Name
             </h1>
@@ -176,6 +222,13 @@ const Dashboard = () => {
             <h1 className="typographyTextXsMedium text-gray-500 w-[170px] ">Date</h1>
             <h1 className="typographyTextXsMedium text-gray-500 w-[176px] ">Time</h1>
             <h1 className="typographyTextXsMedium text-gray-500 w-[344px] ">Note</h1>
+          </div> */}
+          <div className="grid grid-cols-6 gap-4 w-full px-[24px] py-[12px] bg-gray-50 rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200 border-[1px] ">
+            <h1 className="typographyTextXsMedium text-gray-500 w-full  ">Patient Name</h1>
+            <h1 className="typographyTextXsMedium text-gray-500  ">Patient Number</h1>
+            <h1 className="typographyTextXsMedium text-gray-500 ">Date</h1>
+            <h1 className="typographyTextXsMedium text-gray-500 ">Time</h1>
+            <h1 className="typographyTextXsMedium text-gray-500 col-span-2">Note</h1>
           </div>
           <div>
             {loading ? (
