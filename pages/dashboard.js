@@ -54,7 +54,7 @@ const Dashboard = () => {
         } ${style}`}
         onClick={() => setPanel(text)}
       >
-        <h1 className="flex items-center w-full h-full justify-center typographyTextSmSemibold ">
+        <h1 className="flex items-center w-full h-full justify-center typographyTextSmMedium ">
           {text}
         </h1>
       </div>
@@ -158,15 +158,15 @@ const Dashboard = () => {
       <div className="flex w-full justify-between items-center mt-[16px] px-[16px]">
         <div className="flex">
           <ButtonPanel
-            text="SCHEDULED"
+            text="Upcoming"
             style="border-b-[1px] border-l-[1px] border-t-[1px] border-solid border-gray-300 rounded-bl-[6px] rounded-tl-[6px]"
           />
           <ButtonPanel
-            text="COMPLETED"
+            text="Completed"
             style="border-[1px] border-solid border-gray-300"
           />
           <ButtonPanel
-            text="CANCELLED"
+            text="Cancelled"
             style="border-b-[1px] border-r-[1px] border-t-[1px] border-solid border-gray-300 rounded-br-[6px] rounded-tr-[6px]"
           />
         </div>
