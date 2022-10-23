@@ -46,13 +46,13 @@ const Dashboard = () => {
     setEndTime(value === null ? '' : value[1])
   }
 
-  const ButtonPanel = ({ text, style }) => {
+  const ButtonPanel = ({ text, style, value }) => {
     return (
       <div
         className={`cursor-pointer w-[109px] h-[36px] text-center ${
-          panel === text ? 'bg-gray-50 text-base-black' : 'bg-base-white text-gray-500'
+          panel === value ? 'bg-gray-50 text-base-black' : 'bg-base-white text-gray-500'
         } ${style}`}
-        onClick={() => setPanel(text)}
+        onClick={() => setPanel(value)}
       >
         <h1 className="flex items-center w-full h-full justify-center typographyTextSmMedium ">
           {text}
@@ -159,14 +159,17 @@ const Dashboard = () => {
         <div className="flex">
           <ButtonPanel
             text="Upcoming"
+            value="SCHEDULED"
             style="border-b-[1px] border-l-[1px] border-t-[1px] border-solid border-gray-300 rounded-bl-[6px] rounded-tl-[6px]"
           />
           <ButtonPanel
             text="Completed"
+            value="COMPLETED"
             style="border-[1px] border-solid border-gray-300"
           />
           <ButtonPanel
             text="Cancelled"
+            value="CANCELLED"
             style="border-b-[1px] border-r-[1px] border-t-[1px] border-solid border-gray-300 rounded-br-[6px] rounded-tr-[6px]"
           />
         </div>
@@ -224,7 +227,9 @@ const Dashboard = () => {
             <h1 className="typographyTextXsMedium text-gray-500 w-[344px] ">Note</h1>
           </div> */}
           <div className="grid grid-cols-6 gap-4 w-full px-[24px] py-[12px] bg-gray-50 rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200 border-[1px] ">
-            <h1 className="typographyTextXsMedium text-gray-500 w-full  ">Patient Name</h1>
+            <h1 className="typographyTextXsMedium text-gray-500 w-full  ">
+              Patient Name
+            </h1>
             <h1 className="typographyTextXsMedium text-gray-500  ">Patient Number</h1>
             <h1 className="typographyTextXsMedium text-gray-500 ">Date</h1>
             <h1 className="typographyTextXsMedium text-gray-500 ">Time</h1>
