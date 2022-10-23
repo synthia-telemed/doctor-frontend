@@ -50,7 +50,7 @@ export default function Login() {
             type="submit"
             className="mt-[34px] w-[360px] h-[48px] px-[10px] py-[18px] rounded-[8px] bg-primary-500 flex justify-center items-center text-base-white"
           >
-            Submit
+            Login
           </button>
         </div>
       </form>
