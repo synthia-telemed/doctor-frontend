@@ -22,7 +22,7 @@ export default function Login() {
   }
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen">
-      <h1 className="typographyHeadingMdMedium">Login to your account</h1>
+      <h1 className="typographyHeadingMdMedium text-base-black">Login to your account</h1>
       <h1 className="typographyTextMdMedium text-gray-600">
         Welcome back! Please enter your details.
       </h1>
