@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css?family=Poppins");
 @font-face {
   font-family: 'Poppins';
-  src: url('../Components/Assets/Poppins/Poppins-Regular.otf');
   font-style: normal;
 }
 .typographyHeading2xlRegular {
