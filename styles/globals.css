@@ -1,12 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css?family=Poppins");
-@font-face {
+/* @font-face {
   font-family: 'Poppins';
   font-style: normal;
-}
+} */
 .typographyHeading2xlRegular {
   font-family: 'Poppins';
   font-style: normal;
