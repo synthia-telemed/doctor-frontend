@@ -125,7 +125,9 @@ const PatientDetail = props => {
           </div>
           <div className="justify-center flex mt-[48px]">
             {checkIsBeforeStartDateTime ? (
-              <h1 className="text-primary-500">Wait Until 10 minute Before Schedule</h1>
+              <h1 className="text-primary-500 typographyTextMdRegular">
+                Wait Until 10 minute Before Schedule
+              </h1>
             ) : checkIsAfterStartDateTime && checkIsBeforeEndDateTime ? (
               <div className="w-[235px] ">
                 <PrimaryButton text="join meeting" width="235px" onClick={joinMeeting} />
