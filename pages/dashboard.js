@@ -16,7 +16,8 @@ const Dashboard = () => {
   const [apiDefault] = useAPI()
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
-  const [renderFirstTime, setRenderFirstTime] = useState(false)
+  const [pageNumber, setPageNumber] = useState(1)
+  const [totalPage, setTotaPage] = useState(1)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -25,25 +26,37 @@ const Dashboard = () => {
 
   useEffect(() => {
     getListAppointment()
-  }, [panel, search, startTime, endTime])
+  }, [panel, search, startTime, endTime, pageNumber])
+  console.log(listAppointment)
 
   const getListAppointment = async () => {
     setLoading(true)
     const query = {
       status: panel,
-      page_number: 1,
-      per_page: 100,
+      page_number: pageNumber,
+      per_page: 10,
       text: search ? search : null,
       end_date: endTime === '' ? null : endTime,
       start_date: startTime === '' ? null : startTime
     }
     const res = await apiDefault.get('/appointment', { params: query })
     setListAppointment(res.data.appointments)
+    setTotaPage(res.data.total_page)
     setLoading(false)
   }
   const onChangeDateRangePicker = value => {
     setStartTime(value === null ? '' : value[0])
     setEndTime(value === null ? '' : value[1])
+  }
+  const nextPage = () => {
+    if (pageNumber !== totalPage) {
+      setPageNumber(pageNumber + 1)
+    }
+  }
+  const previousPage = () => {
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1)
+    }
   }
 
   const ButtonPanel = ({ text, style, value }) => {
@@ -155,7 +168,7 @@ const Dashboard = () => {
   }
   const Panel = () => {
     return (
-      <div className="flex w-full justify-between items-center mt-[16px] px-[16px]">
+      <div className="flex w-full justify-between items-center mt-[16px] px-[16px] ">
         <div className="flex">
           <ButtonPanel
             text="Upcoming"
@@ -184,7 +197,7 @@ const Dashboard = () => {
               key="search"
               onChange={e => setSearch(e.target.value)}
               value={search}
-              className="pl-[40px] w-[400px] h-[44px] flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px]"
+              className="pl-[40px] w-[400px] h-[44px] flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0"
               placeholder="Search"
               autoFocus
             />
@@ -206,7 +219,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <div className="mt-[150px]">
       <Navbar />
       <div className="border-[1px] border-solid border-gray-200 h-full rounded-[8px] mt-[39px] mx-[112px] mb-[100px]">
         <h1 className="pl-[16px] typographyHeadingSmSemibold mt-[55px] text-base-black">
@@ -291,6 +304,23 @@ const Dashboard = () => {
             ) : (
               <>Error 404</>
             )}
+            <div className="w-full flex justify-between p-[16px] items-center">
+              <button
+                onClick={previousPage}
+                className="py-[16px] h-[36px] w-[86px] border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
+              >
+                Pervious
+              </button>
+              <h1 className="text-gray-700 typographyTextSmMedium">
+                Page {pageNumber} of {totalPage}
+              </h1>
+              <button
+                onClick={nextPage}
+                className="py-[16px] h-[36px] w-[86px] border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -26,7 +26,7 @@ const Navbar = () => {
     { label: 'Schedule', link: '/schedule', page: 'History' }
   ]
   return (
-    <div className="pt-[38px] flex px-[32px] justify-between items-center border-b-[1px] border-solid border-gray-200 py-[32px] w-screen">
+    <div className="flex px-[32px] justify-between items-center border-b-[1px] border-solid border-gray-200 py-[32px] w-screen fixed bg-base-white z-[1000] top-0">
       <div className="flex items-center">
         <img src="/image/rectengular.png" alt="Default Image" className="mr-[16px]" />
         <div className="flex justify-between w-[234px] ">
