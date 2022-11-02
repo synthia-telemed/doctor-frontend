@@ -101,7 +101,7 @@ const PatientDetail = props => {
     )
   }
   return (
-    <div>
+    <div className='mt-[120px]'>
       <Navbar />
       <div className="flex">
         <CardPatientDetail />
