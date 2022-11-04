@@ -91,11 +91,11 @@ const Dashboard = () => {
         <div className="grid grid-cols-6 gap-4 w-full px-[24px] py-[16px] border-b-[1px] border-solid border-gray-200 items-center">
           <div className="flex w-full items-center">
             <img
-              src="/image/Ellipse 3.png"
+              src={data.patient.profile_pic_url}
               alt=""
               width="32px"
               height="32px"
-              className="mr-[8px] object-contain"
+              className="mr-[8px] object-contain rounded-[16px]"
             />
             <h1 className="typographyTextSmMedium text-base-black">
               {data.patient.full_name}
