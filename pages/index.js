@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
@@ -8,6 +9,14 @@ export default function Login() {
   const dispatch = useDispatch()
   const router = useRouter()
   const [api] = useAPI()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      dispatch.user.setToken(token)
+      router.push('/dashboard')
+    }
+  }, [])
 
   const onSubmit = async data => {
     try {
