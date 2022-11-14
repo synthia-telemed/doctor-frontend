@@ -5,6 +5,10 @@ import VideoCallOnIcon from '../../Components/Assets/VideoCallonIcon'
 import MicrophoneOffIcon from '../../Components/Assets/MicrophoneOffIcon'
 import MicrophoneOnIcon from '../../Components/Assets/MicrophoneOnIcon'
 import EndCallIcon from '../../Components/Assets/EndCallIcon'
+import IconCall from '../../Components/Assets/CallIcon'
+import ProfileIcon from '../../Components/Assets/ProfileIcon'
+import ProfileIconBold from '../../Components/Assets/ProfileIconBold'
+import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import Peer from 'simple-peer'
@@ -13,7 +17,9 @@ import useAPI from '../../hooks/useAPI'
 const VideoCallPage = props => {
   const [isMicOn, setIsMicOn] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
+  const [openDetailPatient, setOpenDetailPateint] = useState(false)
   const [appointmentStatus, setAppointmentStatus] = useState('COMPLETED')
+  const [appointmentDetail, setAppointmentDetail] = useState({})
   const { token } = useSelector(state => state.user)
   const [api] = useAPI()
 
@@ -91,6 +97,7 @@ const VideoCallPage = props => {
   }
 
   useEffect(() => {
+    fetchDetailAppointment()
     requestMediaDevice()
       .then(() => {
         console.log('success get media device')
@@ -116,6 +123,14 @@ const VideoCallPage = props => {
     setIsMicOn(!isMicOn)
   }
 
+  const onClickOpenDetailPatient = () => {
+    setOpenDetailPateint(!openDetailPatient)
+  }
+  const fetchDetailAppointment = async () => {
+    const res = await api.get(`/appointment/${props.router.query.appointmentID}`)
+    setAppointmentDetail(res.data)
+  }
+
   const onToggleCamera = async () => {
     if (!localVideo.current) await requestMediaDevice()
     localVideo.current.srcObject
@@ -126,53 +141,157 @@ const VideoCallPage = props => {
 
   return (
     <div>
-      <div className="flex justify-between p-[32px]">
-        <div className="relative">
-          <video
-            className={`relative object-cover`}
-            playsInline
-            autoPlay
-            ref={localVideo}
-            muted
-          ></video>
-          {isMicOn ? (
-            <></>
-          ) : (
-            <div className="absolute top-[90%] right-[10%] z-10">
-              <MicrophoneOffIcon color="red" />
+      <div className="flex p-[32px] bg-base-black h-screen">
+        <video
+          playsInline
+          autoPlay
+          ref={localVideo}
+          className={`object-cover  absolute rounded-[16px]  ${
+            openDetailPatient
+              ? 'h-[80vh] w-[50vw]'
+              : 'w-[90vw] h-[80vh] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-57%]'
+          }   `}
+        ></video>
+        <div className="absolute top-[5%] left-[75%]">
+          <div
+            className={`relative z-10 w-[20vw] h-[20vh] ${
+              openDetailPatient ? 'w-[10vw]' : ''
+            }`}
+          >
+            <video
+              className={`object-cover w-full h-full absolute ${
+                openDetailPatient ? 'right-[350%]' : 'top-[5%] right-[5%]'
+              }  rounded-[16px]  `}
+              playsInline
+              autoPlay
+              ref={localVideo}
+              muted
+            ></video>
+            {isMicOn ? (
+              <></>
+            ) : (
+              <div
+                className={`absolute top-[80%] ${
+                  openDetailPatient ? 'right-[370%]' : ' left-[5%]'
+                } z-100`}
+              >
+                <MicrophoneOffIcon color="red" />
+              </div>
+            )}
+          </div>
+        </div>
+        {openDetailPatient ? (
+          <div className="bg-base-white w-[45vw] h-[80vh] absolute right-[0%] m-[20px] rounded-[16px] p-[16px]">
+              <h1 className="typographyHeadingSmSemibold text-base-black mt-[16px]">
+                Patient Detail
+              </h1>
+              <h1 className="typographyTextXsRegular text-gray-600 ">Name</h1>
+              <h1 className="typographyTextMdRegular text-base-black ">
+                {appointmentDetail?.patient?.full_name}
+              </h1>
+              <div className="flex mt-[8px] w-[376px] justify-between">
+                <div className="flex flex-col">
+                  <div className="flex-col flex">
+                    <h1 className="typographyTextXsRegular text-gray-600">
+                      Patient Number
+                    </h1>
+                    <h1 className="typographyTextMdRegular text-base-black">
+                      {appointmentDetail?.patient?.id}
+                    </h1>
+                  </div>
+                  <div className="mt-[19px]">
+                    <h1 className="typographyTextXsRegular text-gray-600">Birthdate</h1>
+                    <h1 className="typographyTextMdRegular text-base-black">
+                      {dayjs(appointmentDetail?.patient?.birth_date).format('DD/MM/YYYY')}
+                    </h1>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <div>
+                    <h1 className="typographyTextXsRegular text-gray-600 ">Weight</h1>
+                    <h1 className="typographyTextMdRegular text-base-black">
+                      {appointmentDetail?.patient?.weight} Kg.
+                    </h1>
+                  </div>
+                  <div className="mt-[19px]">
+                    <h1 className="typographyTextXsRegular text-gray-600">Blood type</h1>
+                    <h1 className="typographyTextMdRegular text-[18px] text-base-black font-[500] font-[Poppins] normal">
+                      {appointmentDetail?.patient?.blood_type}
+                    </h1>
+                  </div>
+                </div>
+                <div>
+                  <h1 className="typographyTextXsRegular text-gray-600">Height</h1>
+                  <h1 className="typographyTextMdRegular text-base-black">
+                    {appointmentDetail?.patient?.height} cm
+                  </h1>
+                </div>
+              </div>
+              <div className="mt-[8px]">
+                <h1 className="typographyTextXsRegular text-gray-600">Detail</h1>
+                <h1 className="typographyTextMdRegular text-base-black">
+                  {appointmentDetail?.detail}
+                </h1>
+              </div>
             </div>
-          )}
-        </div>
-        <video playsInline autoPlay ref={remoteVideo}></video>
+        ) : (
+          <></>
+        )}
       </div>
-      <div className="flex justify-center mt-[64px]">
-        <button
-          onClick={onToggleCamera}
-          className="bg-[#131517A1] rounded-[32px] w-[48px] h-[48px] background-blur-[3px] flex justify-center items-center "
-        >
-          {isCameraOn ? <VideoCallOnIcon /> : <VideoCallOffIcon />}
-        </button>
-        <div className="flex items-center  mx-[32px]">
-          <button
-            onClick={onCloseRoom}
-            className="bg-[#FB0242] rounded-[32px] w-[48px] h-[48px] background-blur-[3px] flex justify-center items-center mr-[16px]"
-          >
-            <EndCallIcon />
-          </button>
-          <select
-            name="Appointment status"
-            onChange={e => setAppointmentStatus(e.target.value)}
-          >
-            <option value="COMPLETED">Complete</option>
-            <option value="CANCELLED">Cancelled</option>
-          </select>
+      <div className="flex justify-between items-center mt-[64px] bg-base-white absolute bottom-0 w-full h-[96px] px-[80px] z-50 absolute">
+        <div>
+          <h1 className="typographyTextMdMedium text-[16px] text-base-black">
+            Meeting Detail
+          </h1>
         </div>
-        <button
-          onClick={onToggleMic}
-          className="bg-[#131517A1] rounded-[32px] w-[48px] h-[48px] background-blur-[3px] flex justify-center items-center"
-        >
-          {isMicOn ? <MicrophoneOnIcon /> : <MicrophoneOffIcon />}
-        </button>
+        <div className="flex ml-[40px]">
+          <button
+            onClick={onToggleMic}
+            className="bg-[#131517A1] rounded-[32px] w-[48px] h-[48px] background-blur-[3px] flex justify-center items-center mr-[40px]"
+          >
+            {isMicOn ? <MicrophoneOnIcon /> : <MicrophoneOffIcon />}
+          </button>
+
+          <button
+            onClick={onToggleCamera}
+            className="bg-[#131517A1] rounded-[32px] w-[48px] h-[48px] background-blur-[3px] flex justify-center items-center "
+          >
+            {isCameraOn ? <VideoCallOnIcon /> : <VideoCallOffIcon />}
+          </button>
+        </div>
+        <div className="flex items-center" onClick={onClickOpenDetailPatient}>
+          <div
+            className={`flex flex-col justify-center items-center w-[64px] h-[80px] rounded-[16px] ${
+              openDetailPatient ? 'bg-primary-50' : ''
+            }`}
+          >
+            {openDetailPatient ? <ProfileIconBold /> : <ProfileIcon color={'#475467'} />}
+            <h1
+              className={`typographyTextXsMedium mt-[8px] ${
+                openDetailPatient ? 'text-primary-500' : 'text-gray-600'
+              } `}
+            >
+              Patient
+            </h1>
+          </div>
+          <div className="flex items-center bg-[#FB0242] rounded-[16px] h-[40px] ml-[36px]">
+            <button
+              onClick={onCloseRoom}
+              className="  w-[48px] h-[40px] flex justify-center items-center"
+            >
+              <IconCall />
+            </button>
+            <select
+              className="bg-[#FB0242] text-base-white rounded-[16px] mr-[24px]"
+              name="Appointment status"
+              onChange={e => setAppointmentStatus(e.target.value)}
+            >
+              <option value="LEAVE">Leave</option>
+              <option value="COMPLETED">Complete</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
   )
