@@ -1,24 +1,18 @@
 import { useEffect, useState } from 'react'
 import { router, withRouter } from 'next/router'
 import dayjs from 'dayjs'
+import * as utc from 'dayjs/plugin/utc'
 import useAPI from '../hooks/useAPI'
 import Navbar from '../Components/Navbar'
 import PrimaryButton from '../Components/PrimaryButton'
+dayjs.extend(utc)
 
 const PatientDetail = props => {
   const [apiDefault] = useAPI()
   const [detailAppointment, setDetailAppointment] = useState()
-  var current = new Date()
-  const checkIsAfterStartDateTime = dayjs(current).isAfter(
-    detailAppointment?.start_date_time
-  )
-  const checkIsBeforeStartDateTime = dayjs(current).isBefore(
-    detailAppointment?.start_date_time
-  )
-  const checkIsAfterEndDateTime = dayjs(current).isAfter(detailAppointment?.end_date_time)
-  const checkIsBeforeEndDateTime = dayjs(current).isBefore(
-    dayjs(detailAppointment?.end_date_time).add(3, 'h')
-  )
+  const appointmentDateTime = dayjs.utc(detailAppointment?.start_date_time)
+  const checkIsBeforeStartDateTime = dayjs().isBefore(appointmentDateTime.subtract(10, 'minute'), 'minute')
+  const checkIsAfterEndDateTime = dayjs().isAfter(appointmentDateTime.add(3, 'hour'), 'minute')
 
   useEffect(() => {
     getDetailAppointment()
@@ -101,7 +95,7 @@ const PatientDetail = props => {
     )
   }
   return (
-    <div className='mt-[120px]'>
+    <div className="mt-[120px]">
       <Navbar />
       <div className="flex">
         <CardPatientDetail />
@@ -126,16 +120,14 @@ const PatientDetail = props => {
           <div className="justify-center flex mt-[48px]">
             {checkIsBeforeStartDateTime ? (
               <h1 className="text-primary-500 typographyTextMdRegular">
-                Wait Until 10 minute Before Schedule
+                You can join the meeting 10 minutes before the appointment time
               </h1>
-            ) : checkIsAfterStartDateTime && checkIsBeforeEndDateTime ? (
+            ) : checkIsAfterEndDateTime ? (
+              <h1 className="text-primary-500">Your Miss the schedule time</h1>
+            ) : (
               <div className="w-[235px] ">
                 <PrimaryButton text="join meeting" width="235px" onClick={joinMeeting} />
               </div>
-            ) : checkIsAfterEndDateTime ? (
-              <h1 className="text-primary-500">Your Miss this schedule</h1>
-            ) : (
-              <></>
             )}
           </div>
         </div>
