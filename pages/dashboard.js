@@ -5,6 +5,7 @@ import Navbar from '../Components/Navbar'
 import useAPI from '../hooks/useAPI'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import ButtonPanel from '../Components/ButtonPanel'
 import DateRangeTimePicker from '../Components/DateRangeTimePicker'
 
 const Dashboard = () => {
@@ -59,20 +60,6 @@ const Dashboard = () => {
     }
   }
 
-  const ButtonPanel = ({ text, style, value }) => {
-    return (
-      <div
-        className={`cursor-pointer w-[109px] h-[36px] text-center ${
-          panel === value ? 'bg-gray-50 text-base-black' : 'bg-base-white text-gray-500'
-        } ${style}`}
-        onClick={() => setPanel(value)}
-      >
-        <h1 className="flex items-center w-full h-full justify-center typographyTextSmMedium ">
-          {text}
-        </h1>
-      </div>
-    )
-  }
   const CardAppointment = ({ data }) => {
     return (
       <div
@@ -120,50 +107,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
-      // <div
-      //   onClick={() =>
-      //     router.push(
-      //       {
-      //         pathname: '/patient-detail',
-      //         query: { appointmentID: data.id }
-      //       },
-      //       '/patient-detail',
-      //       { shallow: false }
-      //     )
-      //   }
-      //   className="cursor-pointer w-full min-w-full px-[24px] py-[16px] flex border-b-[1px] border-solid border-gray-200"
-      // >
-      //   <div className="max-w-[176px] min-w-[176px] w-full flex items-center">
-      //     <img
-      //       src="/image/Ellipse 3.png"
-      //       alt=""
-      //       width="32px"
-      //       height="32px"
-      //       className="mr-[8px]"
-      //     />
-      //     <h1 className="typographyTextSmMedium text-base-black">
-      //       {data.patient.full_name}
-      //     </h1>
-      //   </div>
-      //   <div className="max-w-[137px] min-w-[137px] w-full flex items-center">
-      //     <h1 className="typographyTextSmMedium text-base-black">{data.patient.id}</h1>
-      //   </div>
-      //   <div className="max-w-[170px] min-w-[170px] w-full flex items-center">
-      //     <h1 className="typographyTextSmMedium text-base-black">
-      //       {dayjs(data.end_date_time).format('DD MMMM YYYY')}
-      //     </h1>
-      //   </div>
-      //   <div className="max-w-[176px] min-w-[176px] w-full flex items-center">
-      //     <h1 className="typographyTextSmMedium text-base-black">
-      //       {' '}
-      //       {dayjs(data.end_date_time).utcOffset(7).format('dddd HH:mm A')}
-      //     </h1>
-      //   </div>
-      //   <div className="max-w-full min-w-[505px] w-full flex items-center justify-start">
-      //     <h1 className="typographyTextSmMedium text-base-black"> {data?.detail}</h1>
-      //   </div>
-      // </div>
     )
   }
   const Panel = () => {
@@ -173,16 +116,22 @@ const Dashboard = () => {
           <ButtonPanel
             text="Upcoming"
             value="SCHEDULED"
+            panel={panel}
+            onClick={() => setPanel("SCHEDULED")}
             style="border-b-[1px] border-l-[1px] border-t-[1px] border-solid border-gray-300 rounded-bl-[6px] rounded-tl-[6px]"
           />
           <ButtonPanel
             text="Completed"
             value="COMPLETED"
+            panel={panel}
+            onClick={() => setPanel("COMPLETED")}
             style="border-[1px] border-solid border-gray-300"
           />
           <ButtonPanel
             text="Cancelled"
             value="CANCELLED"
+            panel={panel}
+            onClick={() => setPanel("CANCELLED")}
             style="border-b-[1px] border-r-[1px] border-t-[1px] border-solid border-gray-300 rounded-br-[6px] rounded-tr-[6px]"
           />
         </div>
@@ -304,7 +253,7 @@ const Dashboard = () => {
             ) : (
               <>Error 404</>
             )}
-            <div className="w-full flex justify-between p-[16px] items-center">
+            <div className="w-[80vw] flex justify-between p-[16px] items-center">
               <button
                 onClick={previousPage}
                 className="py-[16px] h-[36px] w-[86px] border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"

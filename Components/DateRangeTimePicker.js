@@ -7,7 +7,7 @@ import startOfMonth from 'date-fns/startOfMonth'
 import endOfMonth from 'date-fns/endOfMonth'
 import addMonths from 'date-fns/addMonths'
 
-const DateRangeTimePicker = ({ onChange, startTime, endTime }) => {
+const DateRangeTimePicker = ({ onChange, startTime, endTime, startDate, endDate }) => {
   const predefinedRanges = [
     {
       label: 'Today',
@@ -90,13 +90,16 @@ const DateRangeTimePicker = ({ onChange, startTime, endTime }) => {
       appearance: 'default'
     }
   ]
+
   return (
     <>
       {' '}
       <DateRangePicker
-      value={startTime!==""&&endTime!==""? [startTime,endTime]:[]}
+        value={
+          startTime !== '' && endTime !== '' ? [startTime, endTime] : [endDate, startDate]
+        }
         ranges={predefinedRanges}
-        placeholder="Selected Date"
+        placeholder="Select Date"
         onChange={onChange}
         preventOverflow={true}
         style={{ width: 200 }}

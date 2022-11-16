@@ -4,15 +4,107 @@ import dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
 import useAPI from '../hooks/useAPI'
 import Navbar from '../Components/Navbar'
+import ButtonPanel from '../Components/ButtonPanel'
 import PrimaryButton from '../Components/PrimaryButton'
+import CardPatientDetail from '../Components/CardPatientDetail'
+import DateRangeTimePicker from '../Components/DateRangeTimePicker'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts'
+import BadgeStatus from '../Components/BadgeStatus'
+
 dayjs.extend(utc)
 
 const PatientDetail = props => {
   const [apiDefault] = useAPI()
   const [detailAppointment, setDetailAppointment] = useState()
+  const [date, setDate] = useState(new Date())
+  const [subtractDate, setSubtractDate] = useState(
+    dayjs(date).subtract(1, 'month').toDate()
+  )
   const appointmentDateTime = dayjs.utc(detailAppointment?.start_date_time)
-  const checkIsBeforeStartDateTime = dayjs().isBefore(appointmentDateTime.subtract(10, 'minute'), 'minute')
-  const checkIsAfterEndDateTime = dayjs().isAfter(appointmentDateTime.add(3, 'hour'), 'minute')
+  const [panel, setPanel] = useState('Month')
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
+  const data = [
+    {
+      name: 'Page A',
+      uv: 4000,
+      pv: 2400,
+      amt: 2400
+    },
+    {
+      name: 'Page B',
+      uv: 3000,
+      pv: 1398,
+      amt: 2210
+    },
+    {
+      name: 'Page C',
+      uv: 2000,
+      pv: 9800,
+      amt: 2290
+    },
+    {
+      name: 'Page D',
+      uv: 2780,
+      pv: 3908,
+      amt: 2000
+    },
+    {
+      name: 'Page E',
+      uv: 1890,
+      pv: 4800,
+      amt: 2181
+    },
+    {
+      name: 'Page F',
+      uv: 2390,
+      pv: 3800,
+      amt: 2500
+    },
+    {
+      name: 'Page G',
+      uv: 3490,
+      pv: 4300,
+      amt: 2100
+    }
+  ]
+
+  useEffect(() => {
+    if (panel === 'Month') {
+      setSubtractDate(dayjs(date).subtract(1, 'month').toDate())
+    }
+    if (panel === '3 Months') {
+      setSubtractDate(dayjs(date).subtract(3, 'month').toDate())
+    }
+    if (panel === '6 Months') {
+      setSubtractDate(dayjs(date).subtract(6, 'month').toDate())
+    }
+  }, [panel])
+
+  const checkIsBeforeStartDateTime = dayjs().isBefore(
+    appointmentDateTime.subtract(10, 'minute'),
+    'minute'
+  )
+  const checkIsAfterEndDateTime = dayjs().isAfter(
+    appointmentDateTime.add(3, 'hour'),
+    'minute'
+  )
+  const onChangeDateRangePicker = value => {
+    // setStartTime(value === null ? '' : value[0])
+    // setEndTime(value === null ? '' : value[1])
+    setDate(value === null ? '' : value[0])
+    setSubtractDate(value === null ? '' : value[1])
+    setPanel('')
+  }
 
   useEffect(() => {
     getDetailAppointment()
@@ -22,9 +114,9 @@ const PatientDetail = props => {
     const res = await apiDefault.get(`/appointment/${props.router.query.appointmentID}`)
     setDetailAppointment(res.data)
   }
+
   const joinMeeting = async () => {
     const res = await apiDefault.post(`/appointment/${props.router.query.appointmentID}`)
-    console.log(res.data)
     router.push(
       {
         pathname: '/appointment/video-call',
@@ -37,68 +129,12 @@ const PatientDetail = props => {
       { shallow: false }
     )
   }
-  useEffect(() => {}, [props.router.query])
 
-  const CardPatientDetail = () => {
-    return (
-      <div className="border-[1px] border-solid border-gray-200 max-h-[400px] h-full rounded-[8px] mt-[39px] mx-[112px] h-[70vh] w-full max-w-[696px] flex flex-col px-[32px]">
-        <h1 className="typographyHeadingSmSemibold text-base-black mt-[16px]">
-          Patient Detail
-        </h1>
-        <h1 className="typographyTextXsRegular text-gray-600 ">Name</h1>
-        <h1 className="typographyTextMdRegular text-base-black ">
-          {detailAppointment?.patient?.full_name}
-        </h1>
-        <div className="flex mt-[8px] w-[376px] justify-between">
-          <div className="flex flex-col">
-            <div className="flex-col flex">
-              <h1 className="typographyTextXsRegular text-gray-600">Patient Number</h1>
-              <h1 className="typographyTextMdRegular text-base-black">
-                {detailAppointment?.patient?.id}
-              </h1>
-            </div>
-            <div className="mt-[19px]">
-              <h1 className="typographyTextXsRegular text-gray-600">Birthdate</h1>
-              <h1 className="typographyTextMdRegular text-base-black">
-                {dayjs(detailAppointment?.patient?.birth_date).format('DD/MM/YYYY')}
-              </h1>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <div>
-              <h1 className="typographyTextXsRegular text-gray-600 ">Weight</h1>
-              <h1 className="typographyTextMdRegular text-base-black">
-                {detailAppointment?.patient?.weight} Kg.
-              </h1>
-            </div>
-            <div className="mt-[19px]">
-              <h1 className="typographyTextXsRegular text-gray-600">Blood type</h1>
-              <h1 className="typographyTextMdRegular text-[18px] text-base-black font-[500] font-[Poppins] normal">
-                {detailAppointment?.patient?.blood_type}
-              </h1>
-            </div>
-          </div>
-          <div>
-            <h1 className="typographyTextXsRegular text-gray-600">Height</h1>
-            <h1 className="typographyTextMdRegular text-base-black">
-              {detailAppointment?.patient?.height} cm
-            </h1>
-          </div>
-        </div>
-        <div className="mt-[8px]">
-          <h1 className="typographyTextXsRegular text-gray-600">Detail</h1>
-          <h1 className="typographyTextMdRegular text-base-black">
-            {detailAppointment?.detail}
-          </h1>
-        </div>
-      </div>
-    )
-  }
   return (
     <div className="mt-[120px]">
       <Navbar />
       <div className="flex">
-        <CardPatientDetail />
+        <CardPatientDetail detailAppointment={detailAppointment} />
         <div className="border-[1px] border-solid border-gray-200 rounded-[8px] mt-[39px] mx-[112px] h-[70vh] w-full max-w-[416px] max-h-[300px] h-full px-[32px]">
           <h1 className="typographyHeadingSmSemibold mt-[16px] text-base-black ">
             Schedule
@@ -131,6 +167,85 @@ const PatientDetail = props => {
             )}
           </div>
         </div>
+      </div>
+      <div className=" flex mx-[112px] w-[80vw] items-center justify-between mt-[31px]">
+        <h1 className="typographyHeadingSmSemibold text-base-black ">Patient Report</h1>
+        <div className="flex justify-between w-[600px]">
+          <div className="flex">
+            <ButtonPanel
+              text="Month"
+              value="Month"
+              panel={panel}
+              onClick={() => setPanel('Month')}
+              style="border-b-[1px] border-l-[1px] border-t-[1px] border-solid border-gray-300 rounded-bl-[6px] rounded-tl-[6px]"
+            />
+            <ButtonPanel
+              text="3 Months"
+              value="3 Months"
+              panel={panel}
+              onClick={() => setPanel('3 Months')}
+              style="border-[1px] border-solid border-gray-300"
+            />
+            <ButtonPanel
+              text="6 Months"
+              value="6 Months"
+              panel={panel}
+              onClick={() => setPanel('6 Months')}
+              style="border-b-[1px] border-r-[1px] border-t-[1px] border-solid border-gray-300 rounded-br-[6px] rounded-tr-[6px]"
+            />
+          </div>
+          <DateRangeTimePicker
+            endDate={subtractDate}
+            startDate={dayjs(date).toDate()}
+            onChange={onChangeDateRangePicker}
+            startTime={startTime}
+            endTime={endTime}
+          />
+        </div>
+      </div>
+      <div className="mx-[100px] mb-[200px]">
+        <div className=" mt-[28px]">
+          <h1 className="typographyTextLgSemibold text-base-black">Glucose</h1>
+          <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
+            Total Avg this day
+          </h1>
+          <div className="flex items-center">
+            <h1 className="typographyTextXsMedium text-gray-600 flex items-center mr-[10px]">
+              <span className="typographyHeadingXsSemibold text-success-700 mr-[5px]">
+                130
+              </span>{' '}
+              mg/dL
+            </h1>
+            <BadgeStatus text="Normal" style="bg-success-50 text-success-700" />
+          </div>
+        </div>
+        <ResponsiveContainer width="100%" height={240} className="ml-[-24px] mt-[24px]">
+          <LineChart
+            width={'100%'}
+            height={300}
+            data={data}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend
+              wrapperStyle={{ fontSize: '12px', marginBottom: '10px' }}
+              layout="horizontal"
+              verticalAlign="top"
+              align="right"
+              iconType="circle"
+            />
+            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
 
       {/* <button onClick={onLogout}>Logout</button> */}

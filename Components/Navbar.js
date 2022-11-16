@@ -21,9 +21,8 @@ const Navbar = () => {
       label: 'Appointment',
       link: '/dashboard',
       page: 'Appointment',
-      detail:'/patient-detail'
-    },
-    { label: 'Schedule', link: '/schedule', page: 'History' }
+      detail: '/patient-detail'
+    }
   ]
   return (
     <div className="flex px-[32px] justify-between items-center border-b-[1px] border-solid border-gray-200 py-[32px] w-screen fixed bg-base-white z-[1000] top-0">
@@ -36,8 +35,8 @@ const Navbar = () => {
                 text={item.label}
                 key={item.page}
                 path={item.link}
-                textStyle={item.link === pathname || item.detail === pathname  ? 'text-primary-500' : 'text-gray-500'}
-                bgStyle={item.link === pathname || item.detail === pathname  ? 'bg-primary-50' : 'bg-base-white'}
+                textStyle={item.link === pathname ? 'text-primary-500' : 'text-gray-500'}
+                bgStyle={item.link === pathname ? 'bg-primary-50' : 'bg-base-white'}
               />
             )
           })}
