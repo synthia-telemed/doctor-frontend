@@ -28,7 +28,6 @@ const Dashboard = () => {
   useEffect(() => {
     getListAppointment()
   }, [panel, search, startTime, endTime, pageNumber])
-  console.log(listAppointment)
 
   const getListAppointment = async () => {
     setLoading(true)

@@ -13,9 +13,9 @@ const GroupBadgeStatus = ({ data, dataName, isClick }) => {
         <path
           d="M4.16634 12.916L9.99967 7.08268L15.833 12.916"
           stroke="#344054"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     )
@@ -33,9 +33,9 @@ const GroupBadgeStatus = ({ data, dataName, isClick }) => {
         <path
           d="M15.8337 7.08398L10.0003 12.9173L4.16699 7.08398"
           stroke="#344054"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     )
