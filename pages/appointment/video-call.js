@@ -18,7 +18,7 @@ const VideoCallPage = props => {
   const [isMicOn, setIsMicOn] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
   const [openDetailPatient, setOpenDetailPateint] = useState(false)
-  const [appointmentStatus, setAppointmentStatus] = useState('COMPLETED')
+  const [appointmentStatus, setAppointmentStatus] = useState('LEAVE')
   const [appointmentDetail, setAppointmentDetail] = useState({})
   const { token } = useSelector(state => state.user)
   const [api] = useAPI()
@@ -31,10 +31,14 @@ const VideoCallPage = props => {
     stream.getAudioTracks().forEach(track => track.stop())
     stream.getVideoTracks().forEach(track => track.stop())
   }
-  const onCloseRoom = () => {
+  const onCloseRoom = async() => {
     socket.current.emit('close-room')
     if (remoteVideo.current?.srcObject) stopMediaStream(remoteVideo.current.srcObject)
     if (localVideo.current?.srcObject) stopMediaStream(localVideo.current.srcObject)
+    const body = {
+      status: appointmentStatus,
+    };
+    const res = await apiDefault.post('/appointment/complete', body)
     router.push(
       {
         pathname: '/patient-detail',
