@@ -31,14 +31,15 @@ const VideoCallPage = props => {
     stream.getAudioTracks().forEach(track => track.stop())
     stream.getVideoTracks().forEach(track => track.stop())
   }
-  const onCloseRoom = async() => {
+  const onCloseRoom = async () => {
     socket.current.emit('close-room')
     if (remoteVideo.current?.srcObject) stopMediaStream(remoteVideo.current.srcObject)
     if (localVideo.current?.srcObject) stopMediaStream(localVideo.current.srcObject)
-    const body = {
-      status: appointmentStatus,
-    };
-    const res = await apiDefault.post('/appointment/complete', body)
+    if (appointmentStatus !== 'LEAVE') {
+      await apiDefault.post('/appointment/complete', {
+        status: appointmentStatus
+      })
+    }
     router.push(
       {
         pathname: '/patient-detail',
@@ -186,58 +187,58 @@ const VideoCallPage = props => {
         </div>
         {openDetailPatient ? (
           <div className="bg-base-white w-[45vw] h-[80vh] absolute right-[0%] m-[20px] rounded-[16px] p-[16px]">
-              <h1 className="typographyHeadingSmSemibold text-base-black mt-[16px]">
-                Patient Detail
-              </h1>
-              <h1 className="typographyTextXsRegular text-gray-600 ">Name</h1>
-              <h1 className="typographyTextMdRegular text-base-black ">
-                {appointmentDetail?.patient?.full_name}
-              </h1>
-              <div className="flex mt-[8px] w-[376px] justify-between">
-                <div className="flex flex-col">
-                  <div className="flex-col flex">
-                    <h1 className="typographyTextXsRegular text-gray-600">
-                      Patient Number
-                    </h1>
-                    <h1 className="typographyTextMdRegular text-base-black">
-                      {appointmentDetail?.patient?.id}
-                    </h1>
-                  </div>
-                  <div className="mt-[19px]">
-                    <h1 className="typographyTextXsRegular text-gray-600">Birthdate</h1>
-                    <h1 className="typographyTextMdRegular text-base-black">
-                      {dayjs(appointmentDetail?.patient?.birth_date).format('DD/MM/YYYY')}
-                    </h1>
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <div>
-                    <h1 className="typographyTextXsRegular text-gray-600 ">Weight</h1>
-                    <h1 className="typographyTextMdRegular text-base-black">
-                      {appointmentDetail?.patient?.weight} Kg.
-                    </h1>
-                  </div>
-                  <div className="mt-[19px]">
-                    <h1 className="typographyTextXsRegular text-gray-600">Blood type</h1>
-                    <h1 className="typographyTextMdRegular text-[18px] text-base-black font-[500] font-[Poppins] normal">
-                      {appointmentDetail?.patient?.blood_type}
-                    </h1>
-                  </div>
-                </div>
-                <div>
-                  <h1 className="typographyTextXsRegular text-gray-600">Height</h1>
+            <h1 className="typographyHeadingSmSemibold text-base-black mt-[16px]">
+              Patient Detail
+            </h1>
+            <h1 className="typographyTextXsRegular text-gray-600 ">Name</h1>
+            <h1 className="typographyTextMdRegular text-base-black ">
+              {appointmentDetail?.patient?.full_name}
+            </h1>
+            <div className="flex mt-[8px] w-[376px] justify-between">
+              <div className="flex flex-col">
+                <div className="flex-col flex">
+                  <h1 className="typographyTextXsRegular text-gray-600">
+                    Patient Number
+                  </h1>
                   <h1 className="typographyTextMdRegular text-base-black">
-                    {appointmentDetail?.patient?.height} cm
+                    {appointmentDetail?.patient?.id}
+                  </h1>
+                </div>
+                <div className="mt-[19px]">
+                  <h1 className="typographyTextXsRegular text-gray-600">Birthdate</h1>
+                  <h1 className="typographyTextMdRegular text-base-black">
+                    {dayjs(appointmentDetail?.patient?.birth_date).format('DD/MM/YYYY')}
                   </h1>
                 </div>
               </div>
-              <div className="mt-[8px]">
-                <h1 className="typographyTextXsRegular text-gray-600">Detail</h1>
+              <div className="flex flex-col">
+                <div>
+                  <h1 className="typographyTextXsRegular text-gray-600 ">Weight</h1>
+                  <h1 className="typographyTextMdRegular text-base-black">
+                    {appointmentDetail?.patient?.weight} Kg.
+                  </h1>
+                </div>
+                <div className="mt-[19px]">
+                  <h1 className="typographyTextXsRegular text-gray-600">Blood type</h1>
+                  <h1 className="typographyTextMdRegular text-[18px] text-base-black font-[500] font-[Poppins] normal">
+                    {appointmentDetail?.patient?.blood_type}
+                  </h1>
+                </div>
+              </div>
+              <div>
+                <h1 className="typographyTextXsRegular text-gray-600">Height</h1>
                 <h1 className="typographyTextMdRegular text-base-black">
-                  {appointmentDetail?.detail}
+                  {appointmentDetail?.patient?.height} cm
                 </h1>
               </div>
             </div>
+            <div className="mt-[8px]">
+              <h1 className="typographyTextXsRegular text-gray-600">Detail</h1>
+              <h1 className="typographyTextMdRegular text-base-black">
+                {appointmentDetail?.detail}
+              </h1>
+            </div>
+          </div>
         ) : (
           <></>
         )}
