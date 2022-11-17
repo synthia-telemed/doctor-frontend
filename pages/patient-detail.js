@@ -12,6 +12,7 @@ import CardPatientDetail from '../Components/CardPatientDetail'
 import DateRangeTimePicker from '../Components/DateRangeTimePicker'
 import GlucoseGraph from '../Components/GlucoseGraph'
 import PulseGraph from '../Components/PulseGraph'
+import BloodPressureGraph from '../Components/BloodPressureGraph'
 
 dayjs.extend(utc)
 
@@ -27,6 +28,7 @@ const PatientDetail = props => {
   const [panel, setPanel] = useState('Month')
   const [glucoseData, setGlucoseData] = useState([])
   const [pulseData, setPulseData] = useState([])
+  const [bloodPressureData, setBloodPressureData] = useState([])
   const [clickDetailGraphFasting, setClickDettailGraphFasting] = useState(false)
   const [clickDetailGraphAfterMeal, setClickDettailGraphAfterMeal] = useState(false)
   const [clickDetailGraphBeforeMeal, setClickDettailGraphBeforeMeal] = useState(false)
@@ -74,12 +76,14 @@ const PatientDetail = props => {
     getDetailAppointment()
     getGlucoseData()
     getPulseData()
+    getBloodPressureData()
   }, [])
   useEffect(() => {
     getGlucoseData()
     getPulseData()
+    getBloodPressureData()
   }, [subtractDate])
-  console.log(pulseData)
+  console.log(bloodPressureData)
 
   const getGlucoseData = async () => {
     const query = { from: subtractDate.toISOString(), to: date.toISOString() }
@@ -88,6 +92,14 @@ const PatientDetail = props => {
       { params: query }
     )
     setGlucoseData(res.data)
+  }
+  const getBloodPressureData = async () => {
+    const query = { from: subtractDate.toISOString(), to: date.toISOString() }
+    const res = await apiMeasurement.get(
+      `/blood-pressure/visualization/doctor/${props.router.query.appointmentID}`,
+      { params: query }
+    )
+    setBloodPressureData(res.data)
   }
   const getPulseData = async () => {
     const query = { from: subtractDate.toISOString(), to: date.toISOString() }
@@ -200,15 +212,10 @@ const PatientDetail = props => {
         clickDetailGraphFasting={clickDetailGraphFasting}
         xLabel={glucoseData?.xLabel}
       />
-      <PulseGraph
-        pulseData={pulseData}
-        onClickAfterMeal={onClickAfterMeal}
-        onClickBeforeMeal={onClickBeforeMeal}
-        onClickFasting={onClickFasting}
-        clickDetailGraphAfterMeal={clickDetailGraphAfterMeal}
-        clickDetailGraphBeforeMeal={clickDetailGraphBeforeMeal}
-        clickDetailGraphFasting={clickDetailGraphFasting}
-        xLabel={pulseData?.xLabel}
+      <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
+      <BloodPressureGraph
+        bloodPressureData={bloodPressureData}
+        xLabel={bloodPressureData?.xLabel}
       />
 
       {/* <button onClick={onLogout}>Logout</button> */}

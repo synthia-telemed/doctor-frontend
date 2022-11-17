@@ -14,23 +14,13 @@ import * as utc from 'dayjs/plugin/utc'
 
 dayjs.extend(utc)
 
-const PulseGraph = ({
-  pulseData,
-  onClickFasting,
-  onClickBeforeMeal,
-  onClickAfterMeal,
-  clickDetailGraphFasting,
-  clickDetailGraphBeforeMeal,
-  clickDetailGraphAfterMeal,
-  xLabel
-}) => {
-    console.log(pulseData,"pulse graph")
+const PulseGraph = ({ pulseData, xLabel }) => {
   return (
     <div className="mx-[100px] mb-[100px]">
       <div className=" mt-[28px]">
         <h1 className="typographyTextLgSemibold text-base-black">Pulse</h1>
         <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
-          Total Avg this day
+          Total Avg this Month
         </h1>
       </div>
       <ResponsiveContainer width="100%" height={240} className="ml-[-24px] mt-[24px]">
@@ -66,7 +56,7 @@ const PulseGraph = ({
               name="Pulse"
               data={pulseData?.data}
               dataKey="values"
-              stroke={pulseData?.data[0].color}
+              stroke={pulseData && pulseData.data && pulseData?.data[0]?.color}
               radius={30}
             ></Line>
           </>
