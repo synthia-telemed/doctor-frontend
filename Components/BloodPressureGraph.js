@@ -69,10 +69,12 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
             /> */}
           <>
             <Bar barSize={10} dataKey={'values'} radius={30}>
-              {bloodPressureData?.data.map((entry, index) => (
-                // entry.label&&
-                <Cell fill={bloodPressureData?.data[index]?.color} />
-              ))}
+              {bloodPressureData &&
+                bloodPressureData?.data &&
+                bloodPressureData?.data.map((entry, index) => (
+                  // entry.label&&
+                  <Cell fill={bloodPressureData?.data[index]?.color} />
+                ))}
               <LabelList
                 className="typographyTextXsMedium"
                 width={20}
