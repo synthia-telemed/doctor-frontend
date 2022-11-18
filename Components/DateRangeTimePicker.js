@@ -98,6 +98,7 @@ const DateRangeTimePicker = ({ onChange, startTime, endTime, startDate, endDate 
         value={
           startTime !== '' && endTime !== '' ? [startTime, endTime] : [endDate, startDate]
         }
+        cleanable={false}
         ranges={predefinedRanges}
         placeholder="Select Date"
         onChange={onChange}

@@ -3,27 +3,22 @@ import { router, withRouter } from 'next/router'
 import dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
 import useAPI from '../hooks/useAPI'
+import useAPIMeasurement from '../hooks/useApiMeasurement'
+
 import Navbar from '../Components/Navbar'
 import ButtonPanel from '../Components/ButtonPanel'
 import PrimaryButton from '../Components/PrimaryButton'
 import CardPatientDetail from '../Components/CardPatientDetail'
 import DateRangeTimePicker from '../Components/DateRangeTimePicker'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer
-} from 'recharts'
-import BadgeStatus from '../Components/BadgeStatus'
+import GlucoseGraph from '../Components/GlucoseGraph'
+import PulseGraph from '../Components/PulseGraph'
+import BloodPressureGraph from '../Components/BloodPressureGraph'
 
 dayjs.extend(utc)
 
 const PatientDetail = props => {
   const [apiDefault] = useAPI()
+  const [apiMeasurement] = useAPIMeasurement()
   const [detailAppointment, setDetailAppointment] = useState()
   const [date, setDate] = useState(new Date())
   const [subtractDate, setSubtractDate] = useState(
@@ -31,52 +26,14 @@ const PatientDetail = props => {
   )
   const appointmentDateTime = dayjs.utc(detailAppointment?.start_date_time)
   const [panel, setPanel] = useState('Month')
+  const [glucoseData, setGlucoseData] = useState([])
+  const [pulseData, setPulseData] = useState([])
+  const [bloodPressureData, setBloodPressureData] = useState([])
+  const [clickDetailGraphFasting, setClickDettailGraphFasting] = useState(false)
+  const [clickDetailGraphAfterMeal, setClickDettailGraphAfterMeal] = useState(false)
+  const [clickDetailGraphBeforeMeal, setClickDettailGraphBeforeMeal] = useState(false)
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400
-    },
-    {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210
-    },
-    {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100
-    }
-  ]
 
   useEffect(() => {
     if (panel === 'Month') {
@@ -105,10 +62,53 @@ const PatientDetail = props => {
     setSubtractDate(value === null ? '' : value[1])
     setPanel('')
   }
+  const onClickFasting = () => {
+    setClickDettailGraphFasting(!clickDetailGraphFasting)
+  }
+  const onClickBeforeMeal = () => {
+    setClickDettailGraphBeforeMeal(!clickDetailGraphBeforeMeal)
+  }
+  const onClickAfterMeal = () => {
+    setClickDettailGraphAfterMeal(!clickDetailGraphAfterMeal)
+  }
 
   useEffect(() => {
     getDetailAppointment()
+    getGlucoseData()
+    getPulseData()
+    getBloodPressureData()
   }, [])
+  useEffect(() => {
+    getGlucoseData()
+    getPulseData()
+    getBloodPressureData()
+  }, [subtractDate])
+  console.log(bloodPressureData)
+
+  const getGlucoseData = async () => {
+    const query = { from: subtractDate.toISOString(), to: date.toISOString() }
+    const res = await apiMeasurement.get(
+      `/glucose/visualization/doctor/${props.router.query.appointmentID}`,
+      { params: query }
+    )
+    setGlucoseData(res.data)
+  }
+  const getBloodPressureData = async () => {
+    const query = { from: subtractDate.toISOString(), to: date.toISOString() }
+    const res = await apiMeasurement.get(
+      `/blood-pressure/visualization/doctor/${props.router.query.appointmentID}`,
+      { params: query }
+    )
+    setBloodPressureData(res.data)
+  }
+  const getPulseData = async () => {
+    const query = { from: subtractDate.toISOString(), to: date.toISOString() }
+    const res = await apiMeasurement.get(
+      `/pulse/visualization/doctor/${props.router.query.appointmentID}`,
+      { params: query }
+    )
+    setPulseData(res.data)
+  }
 
   const getDetailAppointment = async () => {
     const res = await apiDefault.get(`/appointment/${props.router.query.appointmentID}`)
@@ -129,7 +129,6 @@ const PatientDetail = props => {
       { shallow: false }
     )
   }
-
   return (
     <div className="mt-[120px]">
       <Navbar />
@@ -203,50 +202,21 @@ const PatientDetail = props => {
           />
         </div>
       </div>
-      <div className="mx-[100px] mb-[200px]">
-        <div className=" mt-[28px]">
-          <h1 className="typographyTextLgSemibold text-base-black">Glucose</h1>
-          <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
-            Total Avg this day
-          </h1>
-          <div className="flex items-center">
-            <h1 className="typographyTextXsMedium text-gray-600 flex items-center mr-[10px]">
-              <span className="typographyHeadingXsSemibold text-success-700 mr-[5px]">
-                130
-              </span>{' '}
-              mg/dL
-            </h1>
-            <BadgeStatus text="Normal" style="bg-success-50 text-success-700" />
-          </div>
-        </div>
-        <ResponsiveContainer width="100%" height={240} className="ml-[-24px] mt-[24px]">
-          <LineChart
-            width={'100%'}
-            height={300}
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend
-              wrapperStyle={{ fontSize: '12px', marginBottom: '10px' }}
-              layout="horizontal"
-              verticalAlign="top"
-              align="right"
-              iconType="circle"
-            />
-            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <GlucoseGraph
+        glucoseData={glucoseData}
+        onClickAfterMeal={onClickAfterMeal}
+        onClickBeforeMeal={onClickBeforeMeal}
+        onClickFasting={onClickFasting}
+        clickDetailGraphAfterMeal={clickDetailGraphAfterMeal}
+        clickDetailGraphBeforeMeal={clickDetailGraphBeforeMeal}
+        clickDetailGraphFasting={clickDetailGraphFasting}
+        xLabel={glucoseData?.xLabel}
+      />
+      <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
+      <BloodPressureGraph
+        bloodPressureData={bloodPressureData}
+        xLabel={bloodPressureData?.xLabel}
+      />
 
       {/* <button onClick={onLogout}>Logout</button> */}
     </div>
