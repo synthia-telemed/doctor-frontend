@@ -22,6 +22,10 @@ const PulseGraph = ({ pulseData, xLabel }) => {
         <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
           Total Avg this Month
         </h1>
+        <h1 className={`typographyHeadingXsSemibold text-success-700 mr-[16px]`}>
+          {Math.round(pulseData?.summary?.pulse)+" "}
+          <span className="typographyTextSmMedium text-gray-600">{pulseData?.unit}</span>
+        </h1>
       </div>
       <ResponsiveContainer width="100%" height={240} className="ml-[-24px] mt-[24px]">
         <LineChart width="100%" height={250} className="mt-[5px]">
