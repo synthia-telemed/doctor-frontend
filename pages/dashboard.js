@@ -98,7 +98,7 @@ const Dashboard = () => {
           <div className="">
             <h1 className="typographyTextSmMedium text-base-black">
               {' '}
-              {dayjs(data.end_date_time).utcOffset(7).format('dddd HH:mm A')}
+              {dayjs(data.end_date_time).utcOffset(7).format('HH:mm A')}
             </h1>
           </div>
           <div className="col-span-2">
@@ -190,7 +190,7 @@ const Dashboard = () => {
             <h1 className="typographyTextXsMedium text-gray-500  ">Patient Number</h1>
             <h1 className="typographyTextXsMedium text-gray-500 ">Date</h1>
             <h1 className="typographyTextXsMedium text-gray-500 ">Time</h1>
-            <h1 className="typographyTextXsMedium text-gray-500 col-span-2">Note</h1>
+            <h1 className="typographyTextXsMedium text-gray-500 col-span-2">Detail</h1>
           </div>
           <div>
             {loading ? (
