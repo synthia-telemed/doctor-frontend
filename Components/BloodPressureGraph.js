@@ -75,21 +75,6 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
                   // entry.label&&
                   <Cell fill={bloodPressureData?.data[index]?.color} />
                 ))}
-              <LabelList
-                className="typographyTextXsMedium"
-                width={20}
-                dataKey="values"
-                formatter={v => `${Math.round(v[1])} ${bloodPressureData?.unit}`}
-                position="top"
-              />
-
-              <LabelList
-                className="typographyTextXsMedium"
-                width={20}
-                dataKey="values"
-                formatter={v => `${Math.round(v[0])} ${bloodPressureData?.unit}`}
-                position="bottom"
-              />
             </Bar>
           </>
         </BarChart>
