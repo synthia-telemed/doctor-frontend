@@ -83,7 +83,6 @@ const PatientDetail = props => {
     getPulseData()
     getBloodPressureData()
   }, [subtractDate])
-  console.log(bloodPressureData)
 
   const getGlucoseData = async () => {
     const query = { from: subtractDate.toISOString(), to: date.toISOString() }
@@ -202,21 +201,23 @@ const PatientDetail = props => {
           />
         </div>
       </div>
-      <GlucoseGraph
-        glucoseData={glucoseData}
-        onClickAfterMeal={onClickAfterMeal}
-        onClickBeforeMeal={onClickBeforeMeal}
-        onClickFasting={onClickFasting}
-        clickDetailGraphAfterMeal={clickDetailGraphAfterMeal}
-        clickDetailGraphBeforeMeal={clickDetailGraphBeforeMeal}
-        clickDetailGraphFasting={clickDetailGraphFasting}
-        xLabel={glucoseData?.xLabel}
-      />
-      <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
-      <BloodPressureGraph
-        bloodPressureData={bloodPressureData}
-        xLabel={bloodPressureData?.xLabel}
-      />
+      <div className="mx-[112px]">
+        <GlucoseGraph
+          glucoseData={glucoseData}
+          onClickAfterMeal={onClickAfterMeal}
+          onClickBeforeMeal={onClickBeforeMeal}
+          onClickFasting={onClickFasting}
+          clickDetailGraphAfterMeal={clickDetailGraphAfterMeal}
+          clickDetailGraphBeforeMeal={clickDetailGraphBeforeMeal}
+          clickDetailGraphFasting={clickDetailGraphFasting}
+          xLabel={glucoseData?.xLabel}
+        />
+        <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
+        <BloodPressureGraph
+          bloodPressureData={bloodPressureData}
+          xLabel={bloodPressureData?.xLabel}
+        />
+      </div>
 
       {/* <button onClick={onLogout}>Logout</button> */}
     </div>

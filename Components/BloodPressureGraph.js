@@ -18,7 +18,7 @@ dayjs.extend(utc)
 
 const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
   return (
-    <div className="mx-[100px] mb-[100px]">
+    <div className="mb-[100px]">
       <div className=" mt-[28px]">
         <h1 className="typographyTextLgSemibold text-base-black">Blood Pressure</h1>
         <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">

@@ -25,7 +25,7 @@ const GlucoseGraph = ({
   xLabel
 }) => {
   return (
-    <div className="mx-[100px] mb-[100px]">
+    <div className="mb-[100px]">
       <div className=" mt-[28px]">
         <h1 className="typographyTextLgSemibold text-base-black">Glucose</h1>
         <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
@@ -54,7 +54,7 @@ const GlucoseGraph = ({
                   {glucoseData?.summary?.fasting?.warning.length &&
                     glucoseData?.summary?.fasting?.warning.map(item => {
                       return (
-                        <div className="flex justify-between w-[418px] mb-[8px] border-b-[1px] border-solid border-gray-200">
+                        <div className="flex justify-between w-[418px] mx-[16px] mb-[8px] border-b-[1px] border-solid border-gray-200">
                           <h1 className="typographyTextXsMedium text-gray-500">
                             {dayjs(item.dateTime).format('DD MMM YYYY, HH:mm A')}
                           </h1>
@@ -180,7 +180,7 @@ const GlucoseGraph = ({
           <YAxis domain={[0, 200]} axisLine={false} className="typographyTextXsMedium" />
           <Tooltip labelFormatter={label => dayjs.unix(label).format('D MMM YYYY')} formatter={(v) => Math.round(v)} />
           <Legend
-            wrapperStyle={{ fontSize: '12px' }}
+            wrapperStyle={{ fontSize: '12px', padding: '10px' }}
             layout="horizontal"
             verticalAlign="top"
             align="right"
@@ -197,7 +197,7 @@ const GlucoseGraph = ({
               isAnimationActive={false}
             ></Line>
             <Line
-              name="BeforeMeal"
+              name="Before meal"
               data={glucoseData?.data?.beforeMeal}
               dataKey="value"
               stroke="#303ed9"
@@ -206,7 +206,7 @@ const GlucoseGraph = ({
               isAnimationActive={false}
             ></Line>
             <Line
-              name="AfterMeal"
+              name="After meal"
               data={glucoseData?.data?.afterMeal}
               dataKey="value"
               stroke="#4F84F6"

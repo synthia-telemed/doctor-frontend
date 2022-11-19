@@ -103,7 +103,7 @@ const DateRangeTimePicker = ({ onChange, startTime, endTime, startDate, endDate 
         placeholder="Select Date"
         onChange={onChange}
         preventOverflow={true}
-        style={{ width: 200 }}
+        style={{ width: '100%', marginLeft: '50px' }}
       />
     </>
   )

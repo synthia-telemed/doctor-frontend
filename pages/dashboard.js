@@ -116,21 +116,21 @@ const Dashboard = () => {
             text="Upcoming"
             value="SCHEDULED"
             panel={panel}
-            onClick={() => setPanel("SCHEDULED")}
+            onClick={() => setPanel('SCHEDULED')}
             style="border-b-[1px] border-l-[1px] border-t-[1px] border-solid border-gray-300 rounded-bl-[6px] rounded-tl-[6px]"
           />
           <ButtonPanel
             text="Completed"
             value="COMPLETED"
             panel={panel}
-            onClick={() => setPanel("COMPLETED")}
+            onClick={() => setPanel('COMPLETED')}
             style="border-[1px] border-solid border-gray-300"
           />
           <ButtonPanel
             text="Cancelled"
             value="CANCELLED"
             panel={panel}
-            onClick={() => setPanel("CANCELLED")}
+            onClick={() => setPanel('CANCELLED')}
             style="border-b-[1px] border-r-[1px] border-t-[1px] border-solid border-gray-300 rounded-br-[6px] rounded-tr-[6px]"
           />
         </div>
@@ -160,11 +160,7 @@ const Dashboard = () => {
     )
   }
 
-  const onLogout = () => {
-    dispatch.user.removeToken()
-    localStorage.removeItem('token')
-    router.push('/')
-  }
+  console.log(listAppointment)
 
   return (
     <div className="mt-[150px]">
@@ -220,34 +216,52 @@ const Dashboard = () => {
               </div>
             ) : panel === 'COMPLETED' ? (
               <>
-                {listAppointment?.map(data => {
-                  return (
-                    <>
-                      <CardAppointment key={data.id} data={data} />
-                    </>
-                  )
-                })}
+                {listAppointment.length ? (
+                  listAppointment?.map(data => {
+                    return (
+                      <>
+                        <CardAppointment key={data.id} data={data} />
+                      </>
+                    )
+                  })
+                ) : (
+                  <div className="h-[50vh] flex items-center justify-center">
+                    Not found
+                  </div>
+                )}
               </>
             ) : panel === 'CANCELLED' ? (
               <>
-                {listAppointment?.map(data => {
-                  return (
-                    <>
-                      <CardAppointment key={data.id} data={data} />
-                    </>
-                  )
-                })}
+                {listAppointment.length ? (
+                  listAppointment?.map(data => {
+                    return (
+                      <>
+                        <CardAppointment key={data.id} data={data} />
+                      </>
+                    )
+                  })
+                ) : (
+                  <div className="h-[50vh] flex items-center justify-center">
+                    Not found
+                  </div>
+                )}
               </>
             ) : panel === 'SCHEDULED' ? (
               <>
                 {' '}
-                {listAppointment?.map(data => {
-                  return (
-                    <>
-                      <CardAppointment key={data.id} data={data} />
-                    </>
-                  )
-                })}
+                {listAppointment.length ? (
+                  listAppointment?.map(data => {
+                    return (
+                      <>
+                        <CardAppointment key={data.id} data={data} />
+                      </>
+                    )
+                  })
+                ) : (
+                  <div className="h-[50vh] flex items-center justify-center">
+                    Not found
+                  </div>
+                )}
               </>
             ) : (
               <>Error 404</>
