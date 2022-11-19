@@ -81,7 +81,7 @@ const GlucoseGraph = ({
               <div className="flex items-center" onClick={() => onClickBeforeMeal}>
                 <div className="w-[16px] h-[16px] bg-[#303ed9] rounded-[16px]"></div>{' '}
                 <h1 className="typographyTextMdRegular ml-[4px] text-gray-600">
-                  BeforeMeal
+                  Before meal
                 </h1>
                 <GroupBadgeStatus
                   data={glucoseData?.summary?.beforeMeal}
@@ -121,7 +121,7 @@ const GlucoseGraph = ({
               <div className="flex items-center" onClick={onClickAfterMeal}>
                 <div className="w-[16px] h-[16px] bg-[#4F84F6] rounded-[16px]"></div>{' '}
                 <h1 className="typographyTextMdRegular ml-[4px] text-gray-600">
-                  AfterMeal
+                  After meal
                 </h1>
                 <GroupBadgeStatus
                   data={glucoseData?.summary?.afterMeal}
