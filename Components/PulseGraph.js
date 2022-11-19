@@ -47,7 +47,7 @@ const PulseGraph = ({ pulseData, xLabel }) => {
           />
 
           <YAxis domain={[0, 200]} axisLine={false} className="typographyTextXsMedium" />
-          <Tooltip />
+          <Tooltip labelFormatter={label => dayjs.unix(label).format('D MMM YYYY')} formatter={(v) => Math.round(v)} />
           {/* <Legend
             wrapperStyle={{ fontSize: '12px' }}
             layout="horizontal"
