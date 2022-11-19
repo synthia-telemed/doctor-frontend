@@ -11,7 +11,7 @@ const Navbar = () => {
         <div
           className={`flex flex-col justify-center items-center w-[131px] h-[40px] ${bgStyle} rounded-[16px]`}
         >
-          <h1 className={`typographyTextXsSemibold ${textStyle} `}>{text}</h1>
+          <h1 className={`typographyTextMdMedium ${textStyle} `}>{text}</h1>
         </div>
       </div>
     )

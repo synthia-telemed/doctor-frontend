@@ -102,7 +102,7 @@ const Dashboard = () => {
             </h1>
           </div>
           <div className="col-span-2">
-            <h1 className="typographyTextSmMedium text-base-black"> {data?.detail}</h1>
+            <h1 className="typographyTextSmRegular text-gray-500"> {data?.detail}</h1>
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@ const Dashboard = () => {
               key="search"
               onChange={e => setSearch(e.target.value)}
               value={search}
-              className="pl-[40px] w-[400px] h-[44px] flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0"
+              className="pl-[14px] w-[400px] h-[44px] typographyTextMdRegular flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0"
               placeholder="Search"
               autoFocus
             />
@@ -189,9 +189,9 @@ const Dashboard = () => {
           </div> */}
           <div className="grid grid-cols-6 gap-4 w-full px-[24px] py-[12px] bg-gray-50 rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200 border-[1px] ">
             <h1 className="typographyTextXsMedium text-gray-500 w-full  ">
-              Patient Name
+              Patient name
             </h1>
-            <h1 className="typographyTextXsMedium text-gray-500  ">Patient Number</h1>
+            <h1 className="typographyTextXsMedium text-gray-500  ">Patient number</h1>
             <h1 className="typographyTextXsMedium text-gray-500 ">Date</h1>
             <h1 className="typographyTextXsMedium text-gray-500 ">Time</h1>
             <h1 className="typographyTextXsMedium text-gray-500 col-span-2">Note</h1>
@@ -255,16 +255,16 @@ const Dashboard = () => {
             <div className="w-[80vw] flex justify-between p-[16px] items-center">
               <button
                 onClick={previousPage}
-                className="py-[16px] h-[36px] w-[86px] border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
+                className="py-[16px] h-[36px] w-[86px]  text-gray-700 typographyTextSmMedium border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
               >
-                Pervious
+                Previous
               </button>
               <h1 className="text-gray-700 typographyTextSmMedium">
                 Page {pageNumber} of {totalPage}
               </h1>
               <button
                 onClick={nextPage}
-                className="py-[16px] h-[36px] w-[86px] border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
+                className="py-[16px] h-[36px] w-[86px] text-gray-700 typographyTextSmMedium border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
               >
                 Next
               </button>
