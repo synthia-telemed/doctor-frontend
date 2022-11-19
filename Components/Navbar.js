@@ -9,7 +9,7 @@ const Navbar = () => {
     return (
       <div className="cursor-pointer" onClick={() => router.push(path)}>
         <div
-          className={`flex flex-col justify-center items-center w-[131px] h-[40px] ${bgStyle} rounded-[16px]`}
+          className={`flex flex-col justify-center items-center w-[131px] h-[40px] ${bgStyle} rounded-[8px]`}
         >
           <h1 className={`typographyTextMdMedium ${textStyle} `}>{text}</h1>
         </div>
@@ -43,7 +43,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="w-[119px] h-[40px] border-[1px] border-solid border-gray-300 flex justify-center items-center rounded-[8px]">
-        <h1 className="typographyTextSmMedium">Account</h1>
+        <h1 className="typographyTextSmMedium">Logout</h1>
       </div>
     </div>
   )

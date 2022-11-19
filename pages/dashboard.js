@@ -145,7 +145,7 @@ const Dashboard = () => {
               key="search"
               onChange={e => setSearch(e.target.value)}
               value={search}
-              className="pl-[14px] w-[400px] h-[44px] typographyTextMdRegular flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0"
+              className="pl-[14px] w-[400px] h-[44px] typographyTextMdRegular flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0 focus:outline-none focus:border-primary-300 focus:ring-primary-300 focus:ring-0.5 focus:shadow-xs-primary-100"
               placeholder="Search"
               autoFocus
             />
@@ -165,24 +165,13 @@ const Dashboard = () => {
   return (
     <div className="mt-[150px]">
       <Navbar />
-      <div className="border-[1px] border-solid border-gray-200 h-full rounded-[8px] mt-[39px] mx-[112px] mb-[100px]">
-        <h1 className="pl-[16px] typographyHeadingSmSemibold mt-[55px] text-base-black">
+      <div className="border-[1px] border-solid border-gray-200 h-full rounded-[16px] mx-[112px] mb-[100px]">
+        <h1 className="pl-[16px] mt-[16px] typographyHeadingSmSemibold  text-base-black">
           Appointment
         </h1>
         <Panel />
 
         <div className="flex flex-col items-center mt-[11px] w-full ">
-          {/* <div className="flex typographyHeadingXsMedium w-full pl-[16px] bg-gray-50 px-[24px] py-[12px] border-[1px] rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200">
-            <h1 className="typographyTextXsMedium text-gray-500 w-[176px] ">
-              Patient Name
-            </h1>
-            <h1 className="typographyTextXsMedium text-gray-500 w-[137px] ">
-              Patient Number
-            </h1>
-            <h1 className="typographyTextXsMedium text-gray-500 w-[170px] ">Date</h1>
-            <h1 className="typographyTextXsMedium text-gray-500 w-[176px] ">Time</h1>
-            <h1 className="typographyTextXsMedium text-gray-500 w-[344px] ">Note</h1>
-          </div> */}
           <div className="grid grid-cols-6 gap-4 w-full px-[24px] py-[12px] bg-gray-50 rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200 border-[1px] ">
             <h1 className="typographyTextXsMedium text-gray-500 w-full  ">
               Patient name
