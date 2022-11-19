@@ -36,7 +36,7 @@ const VideoCallPage = props => {
     if (remoteVideo.current?.srcObject) stopMediaStream(remoteVideo.current.srcObject)
     if (localVideo.current?.srcObject) stopMediaStream(localVideo.current.srcObject)
     if (appointmentStatus !== 'LEAVE') {
-      await apiDefault.post('/appointment/complete', {
+      await api.post('/appointment/complete', {
         status: appointmentStatus
       })
     }
@@ -264,11 +264,12 @@ const VideoCallPage = props => {
             {isCameraOn ? <VideoCallOnIcon /> : <VideoCallOffIcon />}
           </button>
         </div>
-        <div className="flex items-center" onClick={onClickOpenDetailPatient}>
+        <div className="flex items-center">
           <div
             className={`flex flex-col justify-center items-center w-[64px] h-[80px] rounded-[16px] ${
               openDetailPatient ? 'bg-primary-50' : ''
             }`}
+            onClick={onClickOpenDetailPatient}
           >
             {openDetailPatient ? <ProfileIconBold /> : <ProfileIcon color={'#475467'} />}
             <h1
