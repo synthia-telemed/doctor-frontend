@@ -20,7 +20,7 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
   return (
     <div className="mx-[100px] mb-[100px]">
       <div className=" mt-[28px]">
-        <h1 className="typographyTextLgSemibold text-base-black">BloodPressure</h1>
+        <h1 className="typographyTextLgSemibold text-base-black">Blood Pressure</h1>
         <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
           Total Avg this Month
         </h1>
@@ -68,7 +68,7 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
               iconType="circle"
             /> */}
           <>
-            <Bar barSize={10} dataKey={'values'} radius={30}>
+            <Bar barSize={10} dataKey={'values'} radius={30} isAnimationActive={false}>
               {bloodPressureData &&
                 bloodPressureData?.data &&
                 bloodPressureData?.data.map((entry, index) => (

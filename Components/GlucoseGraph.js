@@ -194,6 +194,7 @@ const GlucoseGraph = ({
               stroke="#131957"
               fill="#131957"
               radius={30}
+              isAnimationActive={false}
             ></Line>
             <Line
               name="BeforeMeal"
@@ -202,6 +203,7 @@ const GlucoseGraph = ({
               stroke="#303ed9"
               fill="#303ed9"
               radius={30}
+              isAnimationActive={false}
             ></Line>
             <Line
               name="AfterMeal"
@@ -210,6 +212,7 @@ const GlucoseGraph = ({
               stroke="#4F84F6"
               fill="#4F84F6"
               radius={30}
+              isAnimationActive={false}
             ></Line>
           </>
         </LineChart>

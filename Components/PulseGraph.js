@@ -62,6 +62,7 @@ const PulseGraph = ({ pulseData, xLabel }) => {
               dataKey="values"
               stroke={pulseData && pulseData.data && pulseData?.data[0]?.color}
               radius={30}
+              isAnimationActive={false}
             ></Line>
           </>
         </LineChart>
