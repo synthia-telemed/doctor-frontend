@@ -53,7 +53,7 @@ const GroupBadgeStatus = ({ data, dataName, isClick }) => {
       ) : (
         <></>
       )}
-      {data?.summary?.fasting?.hyperglycemia.length ? (
+      {data?.hyperglycemia.length ? (
         <BadgeStatus
           width="116px"
           style="bg-error-50 text-error-700 typographyTextXsMedium "

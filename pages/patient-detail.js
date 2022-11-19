@@ -157,7 +157,7 @@ const PatientDetail = props => {
                 You can join the meeting 10 minutes before the appointment time
               </h1>
             ) : checkIsAfterEndDateTime ? (
-              <h1 className="text-primary-500">Your Miss the schedule time</h1>
+              <h1 className="text-primary-500 typographyTextMdRegular">Your Miss the schedule time</h1>
             ) : (
               <div className="w-[235px] ">
                 <PrimaryButton text="join meeting" width="235px" onClick={joinMeeting} />
