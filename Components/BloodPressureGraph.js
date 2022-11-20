@@ -18,19 +18,29 @@ dayjs.extend(utc)
 
 const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
   console.log(bloodPressureData)
-  const newBloodPressureData =
-    bloodPressureData?.data &&
-    bloodPressureData?.data.map(item => {
-      return {
-        value: item.values,
-        color: item.color,
-        label: item.label
-      }
-    })
+  // const newBloodPressureData =
+  //   bloodPressureData?.data &&
+  //   bloodPressureData?.data.map(item => {
+  //     return {
+  //       value: item.values,
+  //       color: item.color,
+  //       label: item.label
+  //     }
+  //   })
   const CustomTooltip = ({ active, payload, label }) => {
     console.log(payload)
-    // setColorGraph(payload[0].payload.period === "Fasting" ? "#131957" : "#303ed9");
-    return <div className="bg-base-black">{dayjs(label).format('DD MMM')}</div>
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-base-white padding-[20px] w-[150px] h-[100px] flex flex-col justify-center items-start pl-[20px]">
+          <h1 className="typographyTextSmMedium">{dayjs(label).format('DD MMM')}</h1>
+          <h1 className="typographyTextSmMedium">
+            Values : <span className='text-primary-500'> {Math.round(payload[0]?.value[0])} -{' '}
+            {Math.round(payload[0]?.value[1])}</span>
+          </h1>
+        </div>
+      )
+    }
+    return null
   }
   return (
     <div className="mb-[100px]">
@@ -73,8 +83,14 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
           />
 
           <YAxis domain={[0, 200]} axisLine={false} className="typographyTextXsMedium" />
-          <Tooltip content={<CustomTooltip/>}/>
-          <Bar barSize={10} dataKey="values" radius={30} isAnimationActive={false}>
+          <Tooltip content={<CustomTooltip />} />
+          <Bar
+            barSize={10}
+            data={bloodPressureData?.data}
+            dataKey="values"
+            radius={30}
+            isAnimationActive={false}
+          >
             {bloodPressureData &&
               bloodPressureData?.data &&
               bloodPressureData?.data.map((entry, index) => (
