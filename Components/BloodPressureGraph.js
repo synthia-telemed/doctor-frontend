@@ -31,11 +31,13 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
     console.log(payload)
     if (active && payload && payload.length) {
       return (
-        <div className="bg-base-white padding-[20px] w-[150px] h-[100px] flex flex-col justify-center items-start pl-[20px]">
-          <h1 className="typographyTextSmMedium">{dayjs(label).format('DD MMM')}</h1>
+        <div className="bg-base-white padding-[20px] w-[130px] h-[100px] flex flex-col justify-center items-start pl-[20px]">
+          <h1 className="typographyTextSmMedium">{dayjs.unix(label).format('DD MMM')}</h1>
           <h1 className="typographyTextSmMedium">
-            Values : <span className='text-primary-500'> {Math.round(payload[0]?.value[0])} -{' '}
-            {Math.round(payload[0]?.value[1])}</span>
+            Systolic: <span className='text-primary-500'>{Math.round(payload[0]?.value[1])}</span>
+            <br/>
+            Diastolic: <span className='text-primary-500'>{Math.round(payload[0]?.value[0])}</span>
+            
           </h1>
         </div>
       )
