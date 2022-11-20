@@ -39,7 +39,7 @@ const GlucoseGraph = ({
           glucoseData?.summary?.fasting?.warning.length ? (
             <div>
               <div className="flex items-center mt-[8px]" onClick={onClickFasting}>
-                <div className="w-[16px] h-[16px] bg-[#131957] rounded-[16px]"></div>{' '}
+                <div className="w-[8px] h-[8px] bg-[#131957] rounded-[16px]"></div>{' '}
                 <h1 className="typographyTextMdRegular ml-[4px] text-gray-600 mr-[16px]">
                   Fasting
                 </h1>
@@ -122,7 +122,7 @@ const GlucoseGraph = ({
           glucoseData?.summary?.beforeMeal?.normal.length ? (
             <div>
               <div className="flex items-center mt-[8px]" onClick={onClickBeforeMeal}>
-                <div className="w-[16px] h-[16px] bg-[#303ed9] rounded-[16px]"></div>{' '}
+                <div className="w-[8px] h-[8px] bg-[#303ed9] rounded-[16px]"></div>{' '}
                 <h1 className="typographyTextMdRegular ml-[4px] text-gray-600">
                   Before meal
                 </h1>
@@ -190,7 +190,7 @@ const GlucoseGraph = ({
           glucoseData?.summary?.afterMeal?.normal.length ? (
             <div>
               <div className="flex items-center mt-[8px]" onClick={onClickAfterMeal}>
-                <div className="w-[16px] h-[16px] bg-[#4F84F6] rounded-[16px]"></div>{' '}
+                <div className="w-[8px] h-[8px] bg-[#4F84F6] rounded-[16px]"></div>{' '}
                 <h1 className="typographyTextMdRegular ml-[4px] text-gray-600">
                   After meal
                 </h1>
@@ -261,7 +261,7 @@ const GlucoseGraph = ({
             dataKey="label"
             allowDuplicatedCategory={false}
             // label={glucoseData.xLabel}
-            interval="preserveStartEnd"
+            // interval="preserveStartEnd"
             ticks={glucoseData?.ticks}
             axisLine={false}
             // domain={data?.domain}
@@ -280,6 +280,7 @@ const GlucoseGraph = ({
           />
           <Legend
             wrapperStyle={{ fontSize: '12px', padding: '10px' }}
+            iconSize="8"
             layout="horizontal"
             verticalAlign="top"
             align="right"

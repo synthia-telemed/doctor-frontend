@@ -17,6 +17,21 @@ import * as utc from 'dayjs/plugin/utc'
 dayjs.extend(utc)
 
 const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
+  console.log(bloodPressureData)
+  const newBloodPressureData =
+    bloodPressureData?.data &&
+    bloodPressureData?.data.map(item => {
+      return {
+        value: item.values,
+        color: item.color,
+        label: item.label
+      }
+    })
+  const CustomTooltip = ({ active, payload, label }) => {
+    console.log(payload)
+    // setColorGraph(payload[0].payload.period === "Fasting" ? "#131957" : "#303ed9");
+    return <div className="bg-base-black">{dayjs(label).format('DD MMM')}</div>
+  }
   return (
     <div className="mb-[100px]">
       <div className=" mt-[28px]">
@@ -46,7 +61,6 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
             dataKey="label"
             allowDuplicatedCategory={false}
             // label={pulseData.xLabel}
-            interval="preserveStartEnd"
             ticks={bloodPressureData?.ticks}
             axisLine={false}
             // domain={data?.domain}
@@ -59,24 +73,19 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
           />
 
           <YAxis domain={[0, 200]} axisLine={false} className="typographyTextXsMedium" />
-          <Tooltip />
-          {/* <Legend
-              wrapperStyle={{ fontSize: '12px' }}
-              layout="horizontal"
-              verticalAlign="top"
-              align="right"
-              iconType="circle"
-            /> */}
-          <>
-            <Bar barSize={10} dataKey={'values'} radius={30} isAnimationActive={false}>
-              {bloodPressureData &&
-                bloodPressureData?.data &&
-                bloodPressureData?.data.map((entry, index) => (
-                  // entry.label&&
-                  <Cell fill={bloodPressureData?.data[index]?.color} />
-                ))}
-            </Bar>
-          </>
+          <Tooltip content={<CustomTooltip/>}/>
+          <Bar barSize={10} dataKey="values" radius={30} isAnimationActive={false}>
+            {bloodPressureData &&
+              bloodPressureData?.data &&
+              bloodPressureData?.data.map((entry, index) => (
+                // entry.label&&
+                <Cell key={index} fill={bloodPressureData?.data[index]?.color} />
+              ))}
+            {/* {newBloodPressureData &&
+                newBloodPressureData.map((entry, index) => (
+                  <Cell key={index} fill={newBloodPressureData[index]?.color} />
+                ))} */}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
       <h1 className="typographyTextXsMedium text-gray-500 text-center">{xLabel}</h1>

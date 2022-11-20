@@ -34,7 +34,6 @@ const PulseGraph = ({ pulseData, xLabel }) => {
             dataKey="label"
             allowDuplicatedCategory={false}
             // label={pulseData.xLabel}
-            interval="preserveStartEnd"
             ticks={pulseData?.ticks}
             axisLine={false}
             // domain={data?.domain}
