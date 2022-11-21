@@ -52,11 +52,11 @@ const VideoCallPage = props => {
   const onCloseRoom = async () => {
     if (remoteVideo.current?.srcObject) stopMediaStream(remoteVideo.current.srcObject)
     if (localVideo.current?.srcObject) stopMediaStream(localVideo.current.srcObject)
-    if (appointmentStatus !== 'LEAVE') {
+    if (appointmentStatus === 'LEAVE') {
+      socket.current.disconnect()
+    } else {
       socket.current.emit('close-room')
-      await api.post('/appointment/complete', {
-        status: appointmentStatus
-      })
+      await api.post('/appointment/complete', { status: appointmentStatus })
     }
     router.push(
       {
