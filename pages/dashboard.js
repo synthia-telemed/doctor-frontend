@@ -135,7 +135,7 @@ const Dashboard = () => {
           />
         </div>
         <div className="flex">
-          <div className="flex pl-[20px] relative">
+          <div className="flex items-center pl-[20px] relative">
             <img
               src="/image/search-lg.svg"
               alt=""
@@ -145,7 +145,7 @@ const Dashboard = () => {
               key="search"
               onChange={e => setSearch(e.target.value)}
               value={search}
-              className="pl-[14px] w-[400px] h-[44px] typographyTextMdRegular flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0 focus:outline-none focus:border-primary-300 focus:ring-primary-300 focus:ring-0.5 focus:shadow-xs-primary-100"
+              className="pl-[14px] w-[400px] h-[34px] typographyTextMdRegular flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0 focus:outline-none focus:border-primary-300 focus:ring-primary-300 focus:ring-0.5 focus:shadow-xs-primary-100"
               placeholder="Search"
               autoFocus
             />

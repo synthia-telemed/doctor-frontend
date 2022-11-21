@@ -255,7 +255,7 @@ const GlucoseGraph = ({
         </div>
       </div>
       <ResponsiveContainer width="100%" height={240} className="ml-[-24px] mt-[24px]">
-        <LineChart width="100%" height={250} className="mt-[5px]">
+        <LineChart width="100%" height={250} className="mt-[5px] p-[20px]">
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="label"
