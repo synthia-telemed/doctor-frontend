@@ -4,6 +4,8 @@ import VideoCallOffIcon from '../../Components/Assets/VideoCallOffIcon'
 import VideoCallOnIcon from '../../Components/Assets/VideoCallonIcon'
 import MicrophoneOffIcon from '../../Components/Assets/MicrophoneOffIcon'
 import MicrophoneOnIcon from '../../Components/Assets/MicrophoneOnIcon'
+import useAPIMeasurement from '../../hooks/useApiMeasurement'
+import * as utc from 'dayjs/plugin/utc'
 import EndCallIcon from '../../Components/Assets/EndCallIcon'
 import IconCall from '../../Components/Assets/CallIcon'
 import ProfileIcon from '../../Components/Assets/ProfileIcon'
@@ -13,6 +15,11 @@ import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import Peer from 'simple-peer'
 import useAPI from '../../hooks/useAPI'
+import GlucoseGraph from '../../Components/GlucoseGraph'
+import PulseGraph from '../../Components/PulseGraph'
+import BloodPressureGraph from '../../Components/BloodPressureGraph'
+
+dayjs.extend(utc)
 
 const VideoCallPage = props => {
   const [isMicOn, setIsMicOn] = useState(false)
@@ -20,8 +27,19 @@ const VideoCallPage = props => {
   const [openDetailPatient, setOpenDetailPateint] = useState(false)
   const [appointmentStatus, setAppointmentStatus] = useState('LEAVE')
   const [appointmentDetail, setAppointmentDetail] = useState({})
+  const [glucoseData, setGlucoseData] = useState([])
+  const [pulseData, setPulseData] = useState([])
+  const [bloodPressureData, setBloodPressureData] = useState([])
+  const [clickDetailGraphFasting, setClickDettailGraphFasting] = useState(false)
+  const [clickDetailGraphAfterMeal, setClickDettailGraphAfterMeal] = useState(false)
+  const [clickDetailGraphBeforeMeal, setClickDettailGraphBeforeMeal] = useState(false)
+  const [date, setDate] = useState(new Date())
+  const [subtractDate, setSubtractDate] = useState(
+    dayjs(date).subtract(1, 'month').toDate()
+  )
   const { token } = useSelector(state => state.user)
   const [api] = useAPI()
+  const [apiMeasurement] = useAPIMeasurement()
 
   const socket = useRef()
   const localVideo = useRef()
@@ -36,7 +54,7 @@ const VideoCallPage = props => {
     if (remoteVideo.current?.srcObject) stopMediaStream(remoteVideo.current.srcObject)
     if (localVideo.current?.srcObject) stopMediaStream(localVideo.current.srcObject)
     if (appointmentStatus !== 'LEAVE') {
-      await apiDefault.post('/appointment/complete', {
+      await api.post('/appointment/complete', {
         status: appointmentStatus
       })
     }
@@ -100,9 +118,36 @@ const VideoCallPage = props => {
     socket.current.emit('join-room', props.router.query.roomID)
     socket.current.on('start-peering', onStartPeering)
   }
+  const getGlucoseData = async () => {
+    const query = { from: subtractDate.toISOString(), to: date.toISOString() }
+    const res = await apiMeasurement.get(
+      `/glucose/visualization/doctor/${props.router.query.appointmentID}`,
+      { params: query }
+    )
+    setGlucoseData(res.data)
+  }
+  const getBloodPressureData = async () => {
+    const query = { from: subtractDate.toISOString(), to: date.toISOString() }
+    const res = await apiMeasurement.get(
+      `/blood-pressure/visualization/doctor/${props.router.query.appointmentID}`,
+      { params: query }
+    )
+    setBloodPressureData(res.data)
+  }
+  const getPulseData = async () => {
+    const query = { from: subtractDate.toISOString(), to: date.toISOString() }
+    const res = await apiMeasurement.get(
+      `/pulse/visualization/doctor/${props.router.query.appointmentID}`,
+      { params: query }
+    )
+    setPulseData(res.data)
+  }
 
   useEffect(() => {
     fetchDetailAppointment()
+    getGlucoseData()
+    getPulseData()
+    getBloodPressureData()
     requestMediaDevice()
       .then(() => {
         console.log('success get media device')
@@ -118,6 +163,15 @@ const VideoCallPage = props => {
     localVideo.current.srcObject = stream
     setIsCameraOn(true)
     setIsMicOn(true)
+  }
+  const onClickFasting = () => {
+    setClickDettailGraphFasting(!clickDetailGraphFasting)
+  }
+  const onClickBeforeMeal = () => {
+    setClickDettailGraphBeforeMeal(!clickDetailGraphBeforeMeal)
+  }
+  const onClickAfterMeal = () => {
+    setClickDettailGraphAfterMeal(!clickDetailGraphAfterMeal)
   }
 
   const onToggleMic = async () => {
@@ -186,7 +240,7 @@ const VideoCallPage = props => {
           </div>
         </div>
         {openDetailPatient ? (
-          <div className="bg-base-white w-[45vw] h-[80vh] absolute right-[0%] m-[20px] rounded-[16px] p-[16px]">
+          <div className="bg-base-white w-[45vw] h-[80vh] absolute right-[0%] m-[20px] rounded-[16px] p-[16px] overflow-auto">
             <h1 className="typographyHeadingSmSemibold text-base-black mt-[16px]">
               Patient Detail
             </h1>
@@ -238,6 +292,21 @@ const VideoCallPage = props => {
                 {appointmentDetail?.detail}
               </h1>
             </div>
+            <GlucoseGraph
+              glucoseData={glucoseData}
+              onClickAfterMeal={onClickAfterMeal}
+              onClickBeforeMeal={onClickBeforeMeal}
+              onClickFasting={onClickFasting}
+              clickDetailGraphAfterMeal={clickDetailGraphAfterMeal}
+              clickDetailGraphBeforeMeal={clickDetailGraphBeforeMeal}
+              clickDetailGraphFasting={clickDetailGraphFasting}
+              xLabel={glucoseData?.xLabel}
+            />
+            <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
+            <BloodPressureGraph
+              bloodPressureData={bloodPressureData}
+              xLabel={bloodPressureData?.xLabel}
+            />
           </div>
         ) : (
           <></>
@@ -264,11 +333,12 @@ const VideoCallPage = props => {
             {isCameraOn ? <VideoCallOnIcon /> : <VideoCallOffIcon />}
           </button>
         </div>
-        <div className="flex items-center" onClick={onClickOpenDetailPatient}>
+        <div className="flex items-center">
           <div
             className={`flex flex-col justify-center items-center w-[64px] h-[80px] rounded-[16px] ${
               openDetailPatient ? 'bg-primary-50' : ''
             }`}
+            onClick={onClickOpenDetailPatient}
           >
             {openDetailPatient ? <ProfileIconBold /> : <ProfileIcon color={'#475467'} />}
             <h1

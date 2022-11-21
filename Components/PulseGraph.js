@@ -16,7 +16,7 @@ dayjs.extend(utc)
 
 const PulseGraph = ({ pulseData, xLabel }) => {
   return (
-    <div className="mx-[100px] mb-[100px]">
+    <div className="mb-[100px]">
       <div className=" mt-[28px]">
         <h1 className="typographyTextLgSemibold text-base-black">Pulse</h1>
         <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
@@ -34,7 +34,6 @@ const PulseGraph = ({ pulseData, xLabel }) => {
             dataKey="label"
             allowDuplicatedCategory={false}
             // label={pulseData.xLabel}
-            interval="preserveStartEnd"
             ticks={pulseData?.ticks}
             axisLine={false}
             // domain={data?.domain}
@@ -47,7 +46,7 @@ const PulseGraph = ({ pulseData, xLabel }) => {
           />
 
           <YAxis domain={[0, 200]} axisLine={false} className="typographyTextXsMedium" />
-          <Tooltip />
+          <Tooltip labelFormatter={label => dayjs.unix(label).format('D MMM YYYY')} formatter={(v) => Math.round(v)} />
           {/* <Legend
             wrapperStyle={{ fontSize: '12px' }}
             layout="horizontal"
@@ -62,6 +61,7 @@ const PulseGraph = ({ pulseData, xLabel }) => {
               dataKey="values"
               stroke={pulseData && pulseData.data && pulseData?.data[0]?.color}
               radius={30}
+              isAnimationActive={false}
             ></Line>
           </>
         </LineChart>

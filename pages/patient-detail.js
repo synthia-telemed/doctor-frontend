@@ -34,6 +34,8 @@ const PatientDetail = props => {
   const [clickDetailGraphBeforeMeal, setClickDettailGraphBeforeMeal] = useState(false)
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
+  const [isJoinable, setIsJoinable] = useState(false)
+  const [joinErrorMessage, setJoinErrorMessage] = useState('')
 
   useEffect(() => {
     if (panel === 'Month') {
@@ -77,13 +79,13 @@ const PatientDetail = props => {
     getGlucoseData()
     getPulseData()
     getBloodPressureData()
+    getIsAppointmentJoinable()
   }, [])
   useEffect(() => {
     getGlucoseData()
     getPulseData()
     getBloodPressureData()
   }, [subtractDate])
-  console.log(bloodPressureData)
 
   const getGlucoseData = async () => {
     const query = { from: subtractDate.toISOString(), to: date.toISOString() }
@@ -113,6 +115,15 @@ const PatientDetail = props => {
   const getDetailAppointment = async () => {
     const res = await apiDefault.get(`/appointment/${props.router.query.appointmentID}`)
     setDetailAppointment(res.data)
+  }
+  const getIsAppointmentJoinable = async () => {
+    try {
+      await apiDefault.get(`/appointment/${props.router.query.appointmentID}/can-join`)
+      setIsJoinable(true)
+    } catch (error) {
+      setJoinErrorMessage(error.response.data.message)
+      setIsJoinable(false)
+    }
   }
 
   const joinMeeting = async () => {
@@ -153,16 +164,18 @@ const PatientDetail = props => {
             </h1>
           </div>
           <div className="justify-center flex mt-[48px]">
-            {checkIsBeforeStartDateTime ? (
-              <h1 className="text-primary-500 typographyTextMdRegular">
-                You can join the meeting 10 minutes before the appointment time
-              </h1>
-            ) : checkIsAfterEndDateTime ? (
-              <h1 className="text-primary-500">Your Miss the schedule time</h1>
-            ) : (
+            {isJoinable ? (
               <div className="w-[235px] ">
-                <PrimaryButton text="join meeting" width="235px" onClick={joinMeeting} />
+                <PrimaryButton
+                  text="Join appointment"
+                  width="235px"
+                  onClick={joinMeeting}
+                />
               </div>
+            ) : (
+              <h1 className="text-primary-500 typographyTextMdRegular">
+                {joinErrorMessage}
+              </h1>
             )}
           </div>
         </div>
@@ -202,21 +215,23 @@ const PatientDetail = props => {
           />
         </div>
       </div>
-      <GlucoseGraph
-        glucoseData={glucoseData}
-        onClickAfterMeal={onClickAfterMeal}
-        onClickBeforeMeal={onClickBeforeMeal}
-        onClickFasting={onClickFasting}
-        clickDetailGraphAfterMeal={clickDetailGraphAfterMeal}
-        clickDetailGraphBeforeMeal={clickDetailGraphBeforeMeal}
-        clickDetailGraphFasting={clickDetailGraphFasting}
-        xLabel={glucoseData?.xLabel}
-      />
-      <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
-      <BloodPressureGraph
-        bloodPressureData={bloodPressureData}
-        xLabel={bloodPressureData?.xLabel}
-      />
+      <div className="mx-[112px]">
+        <GlucoseGraph
+          glucoseData={glucoseData}
+          onClickAfterMeal={onClickAfterMeal}
+          onClickBeforeMeal={onClickBeforeMeal}
+          onClickFasting={onClickFasting}
+          clickDetailGraphAfterMeal={clickDetailGraphAfterMeal}
+          clickDetailGraphBeforeMeal={clickDetailGraphBeforeMeal}
+          clickDetailGraphFasting={clickDetailGraphFasting}
+          xLabel={glucoseData?.xLabel}
+        />
+        <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
+        <BloodPressureGraph
+          bloodPressureData={bloodPressureData}
+          xLabel={bloodPressureData?.xLabel}
+        />
+      </div>
 
       {/* <button onClick={onLogout}>Logout</button> */}
     </div>

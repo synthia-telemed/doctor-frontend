@@ -1,5 +1,6 @@
 import router from 'next/router'
 import { useState, useEffect } from 'react'
+import IconSynthia from './Assets/IconSynthia'
 const Navbar = () => {
   const [pathname, setPathName] = useState('/dashbord')
   useEffect(() => {
@@ -9,9 +10,9 @@ const Navbar = () => {
     return (
       <div className="cursor-pointer" onClick={() => router.push(path)}>
         <div
-          className={`flex flex-col justify-center items-center w-[131px] h-[40px] ${bgStyle} rounded-[16px]`}
+          className={`flex flex-col justify-center items-center w-[131px] h-[40px] ${bgStyle} rounded-[8px]`}
         >
-          <h1 className={`typographyTextXsSemibold ${textStyle} `}>{text}</h1>
+          <h1 className={`typographyTextMdMedium ${textStyle} `}>{text}</h1>
         </div>
       </div>
     )
@@ -27,8 +28,10 @@ const Navbar = () => {
   return (
     <div className="flex px-[32px] justify-between items-center border-b-[1px] border-solid border-gray-200 py-[32px] w-screen fixed bg-base-white z-[1000] top-0">
       <div className="flex items-center">
-        <img src="/image/rectengular.png" alt="Default Image" className="mr-[16px]" />
-        <div className="flex justify-between w-[234px] ">
+        {/* <img src={IconSynthia} alt="Default Image" className="mr-[16px]" /> */}
+
+        <IconSynthia />
+        <div className="flex justify-between w-[234px] ml-[32px] ">
           {componentNav.map(item => {
             return (
               <ButtonNavbar
@@ -43,7 +46,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="w-[119px] h-[40px] border-[1px] border-solid border-gray-300 flex justify-center items-center rounded-[8px]">
-        <h1 className="typographyTextSmMedium">Account</h1>
+        <h1 className="typographyTextSmMedium">Logout</h1>
       </div>
     </div>
   )

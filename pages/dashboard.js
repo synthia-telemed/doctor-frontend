@@ -98,11 +98,11 @@ const Dashboard = () => {
           <div className="">
             <h1 className="typographyTextSmMedium text-base-black">
               {' '}
-              {dayjs(data.end_date_time).utcOffset(7).format('dddd HH:mm A')}
+              {dayjs(data.end_date_time).utcOffset(7).format('HH:mm A')}
             </h1>
           </div>
           <div className="col-span-2">
-            <h1 className="typographyTextSmMedium text-base-black"> {data?.detail}</h1>
+            <h1 className="typographyTextSmRegular text-gray-500"> {data?.detail}</h1>
           </div>
         </div>
       </div>
@@ -116,21 +116,21 @@ const Dashboard = () => {
             text="Upcoming"
             value="SCHEDULED"
             panel={panel}
-            onClick={() => setPanel("SCHEDULED")}
+            onClick={() => setPanel('SCHEDULED')}
             style="border-b-[1px] border-l-[1px] border-t-[1px] border-solid border-gray-300 rounded-bl-[6px] rounded-tl-[6px]"
           />
           <ButtonPanel
             text="Completed"
             value="COMPLETED"
             panel={panel}
-            onClick={() => setPanel("COMPLETED")}
+            onClick={() => setPanel('COMPLETED')}
             style="border-[1px] border-solid border-gray-300"
           />
           <ButtonPanel
             text="Cancelled"
             value="CANCELLED"
             panel={panel}
-            onClick={() => setPanel("CANCELLED")}
+            onClick={() => setPanel('CANCELLED')}
             style="border-b-[1px] border-r-[1px] border-t-[1px] border-solid border-gray-300 rounded-br-[6px] rounded-tr-[6px]"
           />
         </div>
@@ -145,7 +145,7 @@ const Dashboard = () => {
               key="search"
               onChange={e => setSearch(e.target.value)}
               value={search}
-              className="pl-[40px] w-[400px] h-[44px] flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0"
+              className="pl-[14px] w-[400px] h-[44px] typographyTextMdRegular flex items-center border-[1px] border-solid border-gray-300 rounded-[8px] mr-[24px] z-0 focus:outline-none focus:border-primary-300 focus:ring-primary-300 focus:ring-0.5 focus:shadow-xs-primary-100"
               placeholder="Search"
               autoFocus
             />
@@ -160,48 +160,33 @@ const Dashboard = () => {
     )
   }
 
-  const onLogout = () => {
-    dispatch.user.removeToken()
-    localStorage.removeItem('token')
-    router.push('/')
-  }
+  console.log(listAppointment)
 
   return (
     <div className="mt-[150px]">
       <Navbar />
-      <div className="border-[1px] border-solid border-gray-200 h-full rounded-[8px] mt-[39px] mx-[112px] mb-[100px]">
-        <h1 className="pl-[16px] typographyHeadingSmSemibold mt-[55px] text-base-black">
+      <div className="border-[1px] border-solid border-gray-200 h-full rounded-[16px] mx-[112px] mb-[100px]">
+        <h1 className="pl-[16px] mt-[16px] typographyHeadingSmSemibold  text-base-black">
           Appointment
         </h1>
         <Panel />
 
         <div className="flex flex-col items-center mt-[11px] w-full ">
-          {/* <div className="flex typographyHeadingXsMedium w-full pl-[16px] bg-gray-50 px-[24px] py-[12px] border-[1px] rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200">
-            <h1 className="typographyTextXsMedium text-gray-500 w-[176px] ">
-              Patient Name
-            </h1>
-            <h1 className="typographyTextXsMedium text-gray-500 w-[137px] ">
-              Patient Number
-            </h1>
-            <h1 className="typographyTextXsMedium text-gray-500 w-[170px] ">Date</h1>
-            <h1 className="typographyTextXsMedium text-gray-500 w-[176px] ">Time</h1>
-            <h1 className="typographyTextXsMedium text-gray-500 w-[344px] ">Note</h1>
-          </div> */}
           <div className="grid grid-cols-6 gap-4 w-full px-[24px] py-[12px] bg-gray-50 rounded-tl-[8px] rounded-tr-[8px] border-solid border-gray-200 border-[1px] ">
             <h1 className="typographyTextXsMedium text-gray-500 w-full  ">
-              Patient Name
+              Patient name
             </h1>
-            <h1 className="typographyTextXsMedium text-gray-500  ">Patient Number</h1>
+            <h1 className="typographyTextXsMedium text-gray-500  ">Patient number</h1>
             <h1 className="typographyTextXsMedium text-gray-500 ">Date</h1>
             <h1 className="typographyTextXsMedium text-gray-500 ">Time</h1>
-            <h1 className="typographyTextXsMedium text-gray-500 col-span-2">Note</h1>
+            <h1 className="typographyTextXsMedium text-gray-500 col-span-2">Detail</h1>
           </div>
           <div>
             {loading ? (
               <div className="text-center h-[50vh] flex items-center justify-center">
                 <div role="status">
                   <svg
-                    class="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-primary-500"
+                    className="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-primary-500"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -220,34 +205,52 @@ const Dashboard = () => {
               </div>
             ) : panel === 'COMPLETED' ? (
               <>
-                {listAppointment?.map(data => {
-                  return (
-                    <>
-                      <CardAppointment key={data.id} data={data} />
-                    </>
-                  )
-                })}
+                {listAppointment.length ? (
+                  listAppointment?.map(data => {
+                    return (
+                      <>
+                        <CardAppointment key={data.id} data={data} />
+                      </>
+                    )
+                  })
+                ) : (
+                  <div className="h-[50vh] flex items-center justify-center">
+                    Not found
+                  </div>
+                )}
               </>
             ) : panel === 'CANCELLED' ? (
               <>
-                {listAppointment?.map(data => {
-                  return (
-                    <>
-                      <CardAppointment key={data.id} data={data} />
-                    </>
-                  )
-                })}
+                {listAppointment.length ? (
+                  listAppointment?.map(data => {
+                    return (
+                      <>
+                        <CardAppointment key={data.id} data={data} />
+                      </>
+                    )
+                  })
+                ) : (
+                  <div className="h-[50vh] flex items-center justify-center">
+                    Not found
+                  </div>
+                )}
               </>
             ) : panel === 'SCHEDULED' ? (
               <>
                 {' '}
-                {listAppointment?.map(data => {
-                  return (
-                    <>
-                      <CardAppointment key={data.id} data={data} />
-                    </>
-                  )
-                })}
+                {listAppointment.length ? (
+                  listAppointment?.map(data => {
+                    return (
+                      <>
+                        <CardAppointment key={data.id} data={data} />
+                      </>
+                    )
+                  })
+                ) : (
+                  <div className="h-[50vh] flex items-center justify-center">
+                    Not found
+                  </div>
+                )}
               </>
             ) : (
               <>Error 404</>
@@ -255,16 +258,16 @@ const Dashboard = () => {
             <div className="w-[80vw] flex justify-between p-[16px] items-center">
               <button
                 onClick={previousPage}
-                className="py-[16px] h-[36px] w-[86px] border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
+                className="py-[16px] h-[36px] w-[86px]  text-gray-700 typographyTextSmMedium border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
               >
-                Pervious
+                Previous
               </button>
               <h1 className="text-gray-700 typographyTextSmMedium">
                 Page {pageNumber} of {totalPage}
               </h1>
               <button
                 onClick={nextPage}
-                className="py-[16px] h-[36px] w-[86px] border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
+                className="py-[16px] h-[36px] w-[86px] text-gray-700 typographyTextSmMedium border-[1px] border-solid border-gray-300 rounded-[8px] flex justify-center items-center"
               >
                 Next
               </button>
