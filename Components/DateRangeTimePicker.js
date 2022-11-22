@@ -6,6 +6,9 @@ import addDays from 'date-fns/addDays'
 import startOfMonth from 'date-fns/startOfMonth'
 import endOfMonth from 'date-fns/endOfMonth'
 import addMonths from 'date-fns/addMonths'
+import dayjs from 'dayjs'
+import * as utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 
 const DateRangeTimePicker = ({ onChange, startTime, endTime, startDate, endDate }) => {
   const predefinedRanges = [
@@ -104,8 +107,9 @@ const DateRangeTimePicker = ({ onChange, startTime, endTime, startDate, endDate 
         onChange={onChange}
         preventOverflow={true}
         style={{
-          width:"200px",
-          height:"24px"
+          width: '200px',
+          height: '24px',
+          color: '#4F84F6'
         }}
       />
     </>

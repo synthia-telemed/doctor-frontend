@@ -49,7 +49,7 @@ const PulseGraph = ({ pulseData, xLabel }) => {
           <ReferenceLine y={60} stroke="red" />
 
           <YAxis
-            domain={[0, 200]}
+            domain={[0, 240]}
             tick={{ fontSize: 12, dx: -5 }}
             axisLine={false}
             label={{

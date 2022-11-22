@@ -28,9 +28,6 @@ const GlucoseGraph = ({
     <div className="mb-[100px]">
       <div className=" mt-[28px]">
         <h1 className="typographyTextLgSemibold text-base-black">Glucose</h1>
-        <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
-          Total Avg this day
-        </h1>
         <div className="flex flex-col">
           {/* {checkGlucoseData()} */}
           {glucoseData?.summary?.fasting?.hyperglycemia.length ||
@@ -274,7 +271,7 @@ const GlucoseGraph = ({
           />
 
           <YAxis
-            domain={[0, 200]}
+            domain={[0, 240]}
             tick={{ fontSize: 12, dx: -5 }}
             axisLine={false}
             label={{

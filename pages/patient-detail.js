@@ -179,13 +179,13 @@ const PatientDetail = props => {
 
           <div className="mt-[48px] flex">
             <img src="/image/Time Circle.svg" alt="" className="mr-[16px]" />
-            <h1 className="typographyTextMdRegular text-base-black">
+            <h1 className="typographyTextMdMedium text-base-black">
               {dayjs(detailAppointment?.start_date_time).format('dddd, DD MMMM YYYY')}
             </h1>
           </div>
           <div className="flex mt-[18px] items-center">
             <img src="/image/Calendar.svg" alt="" className="mr-[16px]" />
-            <h1 className="typographyTextMdRegular text-base-black">
+            <h1 className="typographyTextMdMedium text-base-black">
               {dayjs(detailAppointment?.start_date_time).format('HH:mm')} -{' '}
               {dayjs(detailAppointment?.end_date_time).format('HH:mm A')}
             </h1>
