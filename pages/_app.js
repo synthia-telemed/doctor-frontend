@@ -2,6 +2,7 @@ import { Provider } from 'react-redux'
 import { init } from '@rematch/core'
 import * as models from '../models'
 import App from 'next/app'
+import Head from 'next/head'
 import 'rsuite/dist/rsuite.min.css'
 import '../styles/globals.css'
 
@@ -12,6 +13,9 @@ const store = init({
 function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
+      <Head>
+        <title>Synthia Doctor</title>
+      </Head>
       <Component {...pageProps} />
     </Provider>
   )
