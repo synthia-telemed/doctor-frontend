@@ -50,13 +50,13 @@ const VideoCallPage = props => {
     stream.getVideoTracks().forEach(track => track.stop())
   }
   const onCloseRoom = async () => {
-    socket.current.emit('close-room')
     if (remoteVideo.current?.srcObject) stopMediaStream(remoteVideo.current.srcObject)
     if (localVideo.current?.srcObject) stopMediaStream(localVideo.current.srcObject)
-    if (appointmentStatus !== 'LEAVE') {
-      await api.post('/appointment/complete', {
-        status: appointmentStatus
-      })
+    if (appointmentStatus === 'LEAVE') {
+      socket.current.disconnect()
+    } else {
+      socket.current.emit('close-room')
+      await api.post('/appointment/complete', { status: appointmentStatus })
     }
     router.push(
       {
@@ -204,7 +204,7 @@ const VideoCallPage = props => {
         <video
           playsInline
           autoPlay
-          ref={localVideo}
+          ref={remoteVideo}
           className={`object-cover  absolute rounded-[16px]  ${
             openDetailPatient
               ? 'h-[80vh] w-[50vw]'

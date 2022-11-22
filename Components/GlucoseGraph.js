@@ -28,9 +28,6 @@ const GlucoseGraph = ({
     <div className="mb-[100px]">
       <div className=" mt-[28px]">
         <h1 className="typographyTextLgSemibold text-base-black">Glucose</h1>
-        <h1 className="typographyTextXsMedium text-gray-600 mt-[5px]">
-          Total Avg this day
-        </h1>
         <div className="flex flex-col">
           {/* {checkGlucoseData()} */}
           {glucoseData?.summary?.fasting?.hyperglycemia.length ||
@@ -255,7 +252,7 @@ const GlucoseGraph = ({
         </div>
       </div>
       <ResponsiveContainer width="100%" height={240} className="ml-[-24px] mt-[24px]">
-        <LineChart width="100%" height={250} className="mt-[5px]">
+        <LineChart width="100%" height={250} className="mt-[5px] p-[20px]">
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="label"
@@ -273,7 +270,21 @@ const GlucoseGraph = ({
             tickFormatter={t => dayjs.unix(t).format('DD MMM')}
           />
 
-          <YAxis domain={[0, 200]} axisLine={false} className="typographyTextXsMedium" />
+          <YAxis
+            domain={[0, 240]}
+            tick={{ fontSize: 12, dx: -5 }}
+            axisLine={false}
+            label={{
+              value: glucoseData?.unit,
+              angle: -90,
+              position: 'insideLeft',
+              fontFamily: 'Poppins',
+              fontWeight: 500,
+              fontSize: '12px',
+              fill: '#475467'
+            }}
+            className="typographyTextXsMedium"
+          />
           <Tooltip
             labelFormatter={label => dayjs.unix(label).format('D MMM YYYY')}
             formatter={v => Math.round(v)}
@@ -294,6 +305,7 @@ const GlucoseGraph = ({
               stroke="#131957"
               fill="#131957"
               radius={30}
+              strokeWidth={3}
               isAnimationActive={false}
             ></Line>
             <Line
@@ -303,6 +315,7 @@ const GlucoseGraph = ({
               stroke="#303ed9"
               fill="#303ed9"
               radius={30}
+              strokeWidth={3}
               isAnimationActive={false}
             ></Line>
             <Line
@@ -311,13 +324,14 @@ const GlucoseGraph = ({
               dataKey="value"
               stroke="#4F84F6"
               fill="#4F84F6"
+              strokeWidth={3}
               radius={30}
               isAnimationActive={false}
             ></Line>
           </>
         </LineChart>
       </ResponsiveContainer>
-      <h1 className="typographyTextXsMedium text-gray-500 text-center">{xLabel}</h1>
+      <h1 className="typographyTextXsMedium text-gray-500 text-center mt-[16px]">{xLabel}</h1>
     </div>
   )
 }

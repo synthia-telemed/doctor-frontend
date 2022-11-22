@@ -8,6 +8,7 @@ import {
   Legend,
   Cell,
   LabelList,
+  ReferenceLine,
   ResponsiveContainer
 } from 'recharts'
 import GroupBadgeStatus from '../Components/GroupBadgeStatus'
@@ -17,16 +18,6 @@ import * as utc from 'dayjs/plugin/utc'
 dayjs.extend(utc)
 
 const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
-  console.log(bloodPressureData)
-  // const newBloodPressureData =
-  //   bloodPressureData?.data &&
-  //   bloodPressureData?.data.map(item => {
-  //     return {
-  //       value: item.values,
-  //       color: item.color,
-  //       label: item.label
-  //     }
-  //   })
   const CustomTooltip = ({ active, payload, label }) => {
     console.log(payload)
     if (active && payload && payload.length) {
@@ -34,10 +25,11 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
         <div className="bg-base-white padding-[20px] w-[130px] h-[100px] flex flex-col justify-center items-start pl-[20px]">
           <h1 className="typographyTextSmMedium">{dayjs.unix(label).format('DD MMM')}</h1>
           <h1 className="typographyTextSmMedium">
-            Systolic: <span className='text-primary-500'>{Math.round(payload[0]?.value[1])}</span>
-            <br/>
-            Diastolic: <span className='text-primary-500'>{Math.round(payload[0]?.value[0])}</span>
-            
+            Systolic:{' '}
+            <span className="text-primary-500">{Math.round(payload[0]?.value[1])}</span>
+            <br />
+            Diastolic:{' '}
+            <span className="text-primary-500">{Math.round(payload[0]?.value[0])}</span>
           </h1>
         </div>
       )
@@ -83,8 +75,24 @@ const BloodPressureGraph = ({ bloodPressureData, xLabel }) => {
             width="100%"
             tickFormatter={t => dayjs.unix(t).format('DD MMM')}
           />
+          <ReferenceLine y={150} stroke="red" />
+          <ReferenceLine y={60} stroke="red" />
 
-          <YAxis domain={[0, 200]} axisLine={false} className="typographyTextXsMedium" />
+          <YAxis
+            domain={[0, 240]}
+            tick={{ fontSize: 12, dx: -5 }}
+            axisLine={false}
+            label={{
+              value: bloodPressureData?.unit,
+              angle: -90,
+              position: 'insideLeft',
+              fontFamily: 'Poppins',
+              fontWeight: 500,
+              fontSize: '12px',
+              fill: '#475467'
+            }}
+            className="typographyTextXsMedium"
+          />
           <Tooltip content={<CustomTooltip />} />
           <Bar
             barSize={10}
