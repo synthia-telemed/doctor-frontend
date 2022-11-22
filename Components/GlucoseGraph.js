@@ -273,7 +273,21 @@ const GlucoseGraph = ({
             tickFormatter={t => dayjs.unix(t).format('DD MMM')}
           />
 
-          <YAxis domain={[0, 200]} axisLine={false} className="typographyTextXsMedium" />
+          <YAxis
+            domain={[0, 200]}
+            tick={{ fontSize: 12, dx: -5 }}
+            axisLine={false}
+            label={{
+              value: glucoseData?.unit,
+              angle: -90,
+              position: 'insideLeft',
+              fontFamily: 'Poppins',
+              fontWeight: 500,
+              fontSize: '12px',
+              fill: '#475467'
+            }}
+            className="typographyTextXsMedium"
+          />
           <Tooltip
             labelFormatter={label => dayjs.unix(label).format('D MMM YYYY')}
             formatter={v => Math.round(v)}
@@ -294,6 +308,7 @@ const GlucoseGraph = ({
               stroke="#131957"
               fill="#131957"
               radius={30}
+              strokeWidth={3}
               isAnimationActive={false}
             ></Line>
             <Line
@@ -303,6 +318,7 @@ const GlucoseGraph = ({
               stroke="#303ed9"
               fill="#303ed9"
               radius={30}
+              strokeWidth={3}
               isAnimationActive={false}
             ></Line>
             <Line
@@ -311,13 +327,14 @@ const GlucoseGraph = ({
               dataKey="value"
               stroke="#4F84F6"
               fill="#4F84F6"
+              strokeWidth={3}
               radius={30}
               isAnimationActive={false}
             ></Line>
           </>
         </LineChart>
       </ResponsiveContainer>
-      <h1 className="typographyTextXsMedium text-gray-500 text-center">{xLabel}</h1>
+      <h1 className="typographyTextXsMedium text-gray-500 text-center mt-[16px]">{xLabel}</h1>
     </div>
   )
 }

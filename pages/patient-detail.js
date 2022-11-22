@@ -253,11 +253,11 @@ const PatientDetail = props => {
           clickDetailGraphFasting={clickDetailGraphFasting}
           xLabel={glucoseData?.xLabel}
         />
-        <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
         <BloodPressureGraph
           bloodPressureData={bloodPressureData}
           xLabel={bloodPressureData?.xLabel}
         />
+        <PulseGraph pulseData={pulseData} xLabel={pulseData?.xLabel} />
       </div>
 
       {/* <button onClick={onLogout}>Logout</button> */}

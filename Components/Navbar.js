@@ -17,6 +17,10 @@ const Navbar = () => {
       </div>
     )
   }
+  const onClickLogout = () =>{
+    localStorage.removeItem("token")
+    router.push("/");
+  }
   const componentNav = [
     {
       label: 'Appointment',
@@ -45,7 +49,7 @@ const Navbar = () => {
           })}
         </div>
       </div>
-      <div className="w-[119px] h-[40px] border-[1px] border-solid border-gray-300 flex justify-center items-center rounded-[8px]">
+      <div className="w-[119px] cursor-pointer h-[40px] border-[1px] border-solid border-gray-300 flex justify-center items-center rounded-[8px]" onClick={onClickLogout}>
         <h1 className="typographyTextSmMedium">Logout</h1>
       </div>
     </div>
