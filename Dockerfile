@@ -5,15 +5,8 @@ COPY ./package.json ./
 COPY ./pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY ./ ./
-RUN pnpm run build
+RUN pnpm run export
 
-FROM node:16-alpine
-WORKDIR /app
-COPY --from=builder /app/.next/standalone .
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-EXPOSE 3000
-
-ENV NODE_ENV production
-EXPOSE 3000
-CMD [ "node", "server.js" ]
+FROM nginx:1.23
+COPY --from=builder /app/out /usr/share/nginx/html
+EXPOSE 80
